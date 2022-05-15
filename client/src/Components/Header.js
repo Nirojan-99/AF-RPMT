@@ -99,7 +99,7 @@ function Header(props) {
 
           {/*user profile*/}
           {auth && (
-            <div>
+            <>
               <Tooltip title={"Chat"}>
                 <IconButton href="/chat" size="large" color="inherit">
                   <Badge badgeContent={1} color="error">
@@ -138,7 +138,7 @@ function Header(props) {
                   Log Out
                 </MenuItem>
               </Menu>
-            </div>
+            </>
           )}
         </Toolbar>
       </AppBar>

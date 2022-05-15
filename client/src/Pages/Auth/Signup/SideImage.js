@@ -22,7 +22,7 @@ function SideImage(props) {
     <Card raised>
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         <CardMedia
-          style={{ height: "35rem", paddingTop: "0" }}
+          style={{ height: props.heights, paddingTop: "0" }}
           component="img"
           image={image}
         />
@@ -55,8 +55,8 @@ function SideImage(props) {
             height: "50%",
           }}
         >
-          <Button href="/auth/signup" color="secondary" variant="contained">
-            SIGN UP
+          <Button href="/auth/login" color="secondary" variant="contained">
+            SIGN IN
           </Button>
         </div>
       </div>

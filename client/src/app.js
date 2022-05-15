@@ -136,14 +136,14 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <ThemeProvider theme={theme1}>
         <Router>
           <Pages mode={mode} modeHandler={modeHandler} />
         </Router>
         <Footer />
       </ThemeProvider>
-    </div>
+    </>
   );
 }
 
