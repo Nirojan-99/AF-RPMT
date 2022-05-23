@@ -53,24 +53,35 @@ exports.GetUser = (req, res) => {
 
 //update user
 exports.UpdateUser = (req, res) => {
-  //incomming data
-  const { _id } = req.params;
-  const {
-    name,
-    mobile_number,
-    password,
-    role,
-    NIC,
-    gender,
-    bio,
-    address,
-    DOB,
-  } = req.body;
-
-  if (password) {
-    const password = bcrypt.hashSync(password, 12);
-  }
-};
+    //incomming data
+    const { _id } = req.params;
+    const {
+      name,
+      mobile_number,
+      password,
+      role,
+      NIC,
+      gender,
+      bio,
+      address,
+      DOB,
+    } = req.body;
+  
+    if (password) {
+      const password = bcrypt.hashSync(password, 12);
+    }
+  
+    UserModel.findByIdAndUpdate(
+      { _id },
+      { name, mobile_number, password, role, NIC, gender, bio, address, DOB }
+    )
+      .then((data) => {
+        return res.status(200).json({ updated: true });
+      })
+      .catch((er) => {
+        return res.status(404).json({ updated: false });
+      });
+  };
 
 //delete user
 exports.DeleteUser = (req, res) => {
