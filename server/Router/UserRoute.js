@@ -11,5 +11,11 @@ router.use(fileUpload());
 //login
 router.post("/auth", UserCtrl.Login);
 
+//single user
+router
+  .route("/:_id")
+  .get(auth, UserCtrl.GetUser)
+  .put(auth, UserCtrl.UpdateUser)
+  .delete(auth, authAdmin, UserCtrl.DeleteUser);
 
 module.exports = router;
