@@ -1,4 +1,5 @@
 const DocumentModel = require("../Model/DocumentModel");
+const UserModel = require("../Model/UserModel");
 
 //add doc
 exports.AddDocument = (req, res) => {
