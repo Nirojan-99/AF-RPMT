@@ -1,4 +1,3 @@
-import SideImage from "./SideImage";
 import Form from "./Form";
 import Header from "../../../Components/Header";
 
@@ -43,36 +42,7 @@ function SignIn(props) {
                 <Form />
               </Paper>
             </Grid>
-            <Grid
-              className={classes.card}
-              item
-              xs={0}
-              sm={4}
-              md={3}
-              lg={3}
-              display={{ xs: "none", sm: "block" }}
-            >
-              <Paper>
-                <SideImage
-                  heights={"49rem"}
-                  heading="Alredy here?"
-                  subheading="Log in and continue your research!"
-                />
-              </Paper>
-            </Grid>
             <Grid item xs={1} sm={1} md={1} lg={2}></Grid>
-            <Grid
-              className={classes.card}
-              item
-              xs={10}
-              display={{ xs: "block", sm: "none" }}
-            >
-              <SideImage
-                heights={"37rem"}
-                heading="Alredy here?"
-                subheading="Log in and continue your research!"
-              />
-            </Grid>
           </Grid>
         </Box>
       </Paper>
