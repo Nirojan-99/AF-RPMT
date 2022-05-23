@@ -41,4 +41,7 @@ router
   .post(UserCtrl.Register)
   .get(auth, authAdmin, UserCtrl.GetUsers);
 
+//staff related grping
+router.route("/staff/:_id/groups").get(auth, authStaff, UserCtrl.GetGroup);
+
 module.exports = router;

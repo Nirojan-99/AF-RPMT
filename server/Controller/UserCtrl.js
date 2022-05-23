@@ -350,3 +350,64 @@ exports.GetUsers = (req, res) => {
       });
   }
 };
+
+//staff get group details
+exports.GetGroup = (req, res) => {
+  const { request, group } = req.query;
+  const { _id } = req.params;
+
+  if (request) {
+    UserModel.findById({ _id }, { requests: 1 })
+      .then((data) => {
+        const ids = data.requests.map((row) => row.id);
+
+        GroupModel.find(
+          { _id: { $in: ids } },
+          {
+            coSupervisor: 1,
+            supervisor: 1,
+            leader: 1,
+            research_Topic: 1,
+            research_Field: 1,
+            name: 1,
+            requested: 1,
+          }
+        )
+          .populate({ path: "members", select: "name" })
+          .populate({ path: "supervisor", select: "name" })
+          .populate({ path: "coSupervisor", select: "name" })
+          .then((data) => {
+            return res.status(200).json(data);
+          })
+          .catch((er) => {
+            return res.status(404).json({ fetched: false });
+          });
+      })
+      .catch((er) => {});
+  } else if (group) {
+    UserModel.findById({ _id }, { groups: 1 })
+      .then((data) => {
+        GroupModel.find(
+          { _id: { $in: data.groups } },
+          {
+            coSupervisor: 1,
+            supervisor: 1,
+            leader: 1,
+            research_Topic: 1,
+            research_Field: 1,
+            name: 1,
+          }
+        )
+          .populate({ path: "members", select: "name" })
+          .populate({ path: "supervisor", select: "name" })
+          .populate({ path: "coSupervisor", select: "name" })
+          .then((data) => {
+            return res.status(200).json(data);
+          })
+          .catch((er) => {});
+      })
+      .catch((er) => {
+        return res.status(404).json({ fetched: false });
+      });
+  }
+};
