@@ -186,3 +186,80 @@ exports.ResetPassword = (req, res) => {
       return res.status(404).json({ updated: false });
     });
 };
+
+//update dp
+exports.UpdateDp = (req, res) => {
+  //coming data
+  const { _id } = req.params;
+  const date = Date.now();
+
+  if (req.files) {
+    let fileToUpload = req.files.dp;
+    const fileName = _id + date + fileToUpload.name;
+
+    UserModel.findById({ _id }, { dp: 1 }).then((data) => {
+      if (data.dp) {
+        const path = data.dp.split("http://localhost:5000/")[1];
+        fs.unlink(path, (er) => {
+          if (er) {
+            console.log(er);
+          }
+        });
+      }
+      //add new
+      fileToUpload.mv("Uploads/" + fileName, (error) => {
+        if (error) {
+          console.log(error);
+          return res.status(404).json({ updated: false });
+        } else {
+          const link = "http://localhost:5000/Uploads/" + fileName;
+          UserModel.findByIdAndUpdate({ _id }, { dp: link })
+            .then((data) => {
+              return res.status(200).json({ updated: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ updated: false });
+            });
+        }
+      });
+    });
+  } else {
+    return res.status(404).json({ updated: false });
+  }
+};
+
+//remove dp
+exports.RemoveDp = (req, res) => {
+  const { _id } = req.params;
+  UserModel.findByIdAndUpdate({ _id }, { dp: "" }).then((data) => {
+    if (data.dp) {
+      const path = data.dp.split("http://localhost:5000/")[1];
+      fs.unlink(path, (er) => {
+        if (er) {
+          console.log(er);
+        }
+      });
+      return res.status(200).json({ deleted: true });
+    } else {
+      return res.status(404).json({ deleted: false });
+    }
+  });
+};
+
+//remove dp
+exports.RemoveDp = (req, res) => {
+  const { _id } = req.params;
+  UserModel.findByIdAndUpdate({ _id }, { dp: "" }).then((data) => {
+    if (data.dp) {
+      const path = data.dp.split("http://localhost:5000/")[1];
+      fs.unlink(path, (er) => {
+        if (er) {
+          console.log(er);
+        }
+      });
+      return res.status(200).json({ deleted: true });
+    } else {
+      return res.status(404).json({ deleted: false });
+    }
+  });
+};
