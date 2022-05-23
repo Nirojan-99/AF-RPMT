@@ -7,6 +7,6 @@ const DocumentCtrl = require("../Controller/DocumentCtrl");
 router.use(fileUpload());
 
 //single document
-router.post(DocumentCtrl.AddDocument);
+router.post(DocumentCtrl.AddDocument).put(DocumentCtrl.EditDoc);
 
 module.exports = router;
