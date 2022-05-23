@@ -22,4 +22,10 @@ router
 router.route("/password/:email").get(UserCtrl.CheckEmail);
 router.route("/password/:_id").post(UserCtrl.CheckOTP);
 
+//single user password
+router
+  .route("/password/:_id")
+  .patch(auth, UserCtrl.ChangePassword)
+  .put(UserCtrl.ResetPassword);
+
 module.exports = router;

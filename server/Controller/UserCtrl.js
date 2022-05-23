@@ -139,3 +139,50 @@ exports.CheckOTP = (req, res) => {
       return res.status(404).json({ match: false });
     });
 };
+
+//change password
+exports.ChangePassword = (req, res) => {
+  const { _id } = req.params;
+  const { password, newPassword } = req.body;
+
+  UserModel.findById({ _id }, { password: 1 })
+    .then((data) => {
+      if (data.password) {
+        const result = bcrypt.compareSync(password, data.password);
+        if (result) {
+          const hash = bcrypt.hashSync(newPassword, 12);
+
+          UserModel.findByIdAndUpdate({ _id }, { password: hash })
+            .then((data) => {
+              return res.status(200).json({ updated: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ updated: false });
+            });
+        } else {
+          return res.status(404).json({ updated: false });
+        }
+      } else {
+        return res.status(404).json({ updated: false });
+      }
+    })
+    .catch((er) => {
+      return res.status(404).json({ updated: false });
+    });
+};
+
+//reset password
+exports.ResetPassword = (req, res) => {
+  const { _id } = req.params;
+  const { newPassword } = req.body;
+
+  const hash = bcrypt.hashSync(newPassword, 12);
+
+  UserModel.findByIdAndUpdate({ _id }, { password: hash })
+    .then((data) => {
+      return res.status(200).json({ updated: true });
+    })
+    .catch((er) => {
+      return res.status(404).json({ updated: false });
+    });
+};
