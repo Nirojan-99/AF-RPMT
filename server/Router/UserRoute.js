@@ -18,4 +18,8 @@ router
   .put(auth, UserCtrl.UpdateUser)
   .delete(auth, authAdmin, UserCtrl.DeleteUser);
 
+//forget password
+router.route("/password/:email").get(UserCtrl.CheckEmail);
+router.route("/password/:_id").post(UserCtrl.CheckOTP);
+
 module.exports = router;
