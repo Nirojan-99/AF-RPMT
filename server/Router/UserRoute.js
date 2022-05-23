@@ -47,4 +47,7 @@ router.route("/staff/:_id/groups").get(auth, authStaff, UserCtrl.GetGroup);
 //staff pannel
 router.route("/staff/pannel/:_id").get(auth, UserCtrl.GetPannel);
 
+//search any staff
+router.route("/staff/:role").get(auth, UserCtrl.GetStaff);
+
 module.exports = router;

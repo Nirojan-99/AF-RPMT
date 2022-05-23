@@ -433,3 +433,20 @@ exports.GetPannel = (req, res) => {
       return res.status(404).json({ fetched: false });
     });
 };
+
+//search staff
+exports.GetStaff = (req, res) => {
+  const { search } = req.query;
+  const { role } = req.params;
+
+  UserModel.find(
+    { role: "Staff", name: { $regex: "^" + search } },
+    { name: 1, email: 1, mobile_number: 1, dp: 1 }
+  )
+    .then((data) => {
+      return res.status(200).json({ data });
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
