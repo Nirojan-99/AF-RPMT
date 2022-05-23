@@ -8,5 +8,8 @@ const { authAdmin, authStaff } = require("../Middleware/authAdmin");
 
 router.use(fileUpload());
 
+//login
+router.post("/auth", UserCtrl.Login);
+
 
 module.exports = router;
