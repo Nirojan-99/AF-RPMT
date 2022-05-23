@@ -8,4 +8,6 @@ const { authAdmin, authStaff } = require("../Middleware/authAdmin");
 
 router.use(fileUpload());
 
+router.get("/", auth, SubmissionCtrl.GetSubmissions);
+
 module.exports = router;
