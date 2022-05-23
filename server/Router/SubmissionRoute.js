@@ -10,4 +10,11 @@ router.use(fileUpload());
 
 router.get("/", auth, SubmissionCtrl.GetSubmissions);
 
+router
+  .route("/:_id")
+  .get(auth, SubmissionCtrl.GetSubmision)
+  .post(auth, authAdmin, SubmissionCtrl.AddSubmission)
+  .put(auth, authAdmin, SubmissionCtrl.EditSubmission)
+  .delete(auth, authAdmin, SubmissionCtrl.DeleteSubmission);
+
 module.exports = router;
