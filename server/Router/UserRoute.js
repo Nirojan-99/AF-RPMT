@@ -28,4 +28,11 @@ router
   .patch(auth, UserCtrl.ChangePassword)
   .put(UserCtrl.ResetPassword);
 
+//dp route
+router
+  .route("/dp/:_id")
+  .put(auth, UserCtrl.UpdateDp)
+  .delete(auth, UserCtrl.RemoveDp)
+  .get(auth, UserCtrl.GetDp);
+
 module.exports = router;
