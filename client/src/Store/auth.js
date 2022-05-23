@@ -4,6 +4,7 @@ const initial = {
   token: localStorage.getItem("token"),
   role: localStorage.getItem("role"),
   userID: localStorage.getItem("userID"),
+  URL:"http://localhost:5000/api/v1/"
 };
 
 localStorage.removeItem("email");
