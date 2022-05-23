@@ -411,3 +411,25 @@ exports.GetGroup = (req, res) => {
       });
   }
 };
+
+//get staff pannel details
+exports.GetPannel = (req, res) => {
+  const { _id } = req.params;
+
+  UserModel.findById({ _id })
+    .populate({
+      path: "pannel",
+      select:
+        "name research_Field research_Topic research_Topic_doc leader supervisor coSupervisor ",
+    })
+    .then((data) => {
+      if (data.pannel) {
+        return res.status(200).json(data.pannel);
+      } else {
+        return res.status(404).json({ fetched: false });
+      }
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
