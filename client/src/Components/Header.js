@@ -18,12 +18,17 @@ import MessageIcon from "@mui/icons-material/Message";
 import { dark, light } from "../Store/theme";
 
 import logo from "../Assets/logo.png";
+import { logout } from "../Store/auth";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import AllChatModel from "../Pages/ChatModel/AllChatModel";
 
 function Header(props) {
-  const [auth, setAuth] = useState(true);
+  //auth
+  const { token, userID ,role} = useSelector((state) => state.loging);
+
+  const [auth, setAuth] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
 
   //mode
@@ -82,7 +87,7 @@ function Header(props) {
             </IconButton>
           </Tooltip>
 
-          {!auth && (
+          {!token && (
             <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}>
               <Link href="/auth/sign-in">
                 <Button key={"login"} color="info">
@@ -98,15 +103,16 @@ function Header(props) {
           )}
 
           {/*user profile*/}
-          {auth && (
-            <>
-              <Tooltip title={"Chat"}>
+          {token && (
+            <div>
+              {role !== "Admin" && <AllChatModel />}
+              {/* <Tooltip title={"Chat"}>
                 <IconButton href="/chat" size="large" color="inherit">
                   <Badge badgeContent={1} color="error">
                     <MessageIcon fontSize="inherit" />
                   </Badge>
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="profile">
                 <IconButton size="large" onClick={handleMenu} color="inherit">
                   <AccountCircle fontSize="inherit" />
@@ -133,12 +139,14 @@ function Header(props) {
                 <MenuItem
                   onClick={() => {
                     setAuth(false);
+                    dispatch(logout());
+                    window.location.reload();
                   }}
                 >
                   Log Out
                 </MenuItem>
               </Menu>
-            </>
+            </div>
           )}
         </Toolbar>
       </AppBar>
