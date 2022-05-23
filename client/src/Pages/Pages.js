@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 //pages
 import SignIn from "./Auth/Login/Signin";
 import Signup from "./Auth/Signup/Signup";
+import DashBoard from "./DashBoard/DashBoard";
 
 function Pages(props) {
   return (
