@@ -35,4 +35,10 @@ router
   .delete(auth, UserCtrl.RemoveDp)
   .get(auth, UserCtrl.GetDp);
 
+//register & all users
+router
+  .route("/")
+  .post(UserCtrl.Register)
+  .get(auth, authAdmin, UserCtrl.GetUsers);
+
 module.exports = router;
