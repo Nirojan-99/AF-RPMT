@@ -305,3 +305,48 @@ exports.Register = (req, res) => {
       });
   });
 };
+
+//get all users
+exports.GetUsers = (req, res) => {
+  const { page, search } = req.query;
+
+  const skip = (page - 1) * 20;
+  const limit = 20;
+
+  if (search) {
+    UserModel.find(
+      { name: { $regex: "^" + search }, role: { $in: ["Staff", "Student"] } },
+      { password: 0, createdAt: 0, updatedAt: 0, __v: 0 },
+      { skip, limit }
+    )
+      .then((data) => {
+        UserModel.countDocuments({
+          name: { $regex: "^" + search },
+          role: { $in: ["Staff", "Student"] },
+        }).then((count) => {
+          console.log(data);
+          return res.status(200).json({ data, count });
+        });
+      })
+      .catch((er) => {
+        return res.status(404).json({ fetched: false });
+      });
+  } else {
+    UserModel.find(
+      { role: { $in: ["Staff", "Student"] } },
+      { password: 0, createdAt: 0, updatedAt: 0, __v: 0 },
+      { skip, limit }
+    )
+      .then((data) => {
+        UserModel.countDocuments({ role: { $in: ["Staff", "Student"] } }).then(
+          (count) => {
+            return res.status(200).json({ data, count });
+          }
+        );
+        // return res.status(200).json(data);
+      })
+      .catch((er) => {
+        return res.status(404).json({ fetched: false });
+      });
+  }
+};
