@@ -8,8 +8,15 @@ function Pages(props) {
   return (
     <>
       <Routes>
-        <Route path="/auth/login" element={<SignIn handler={props.modeHandler} />} />
-        <Route path="/auth/signup" element={<Signup handler={props.modeHandler} />} />
+        <Route path="/" element={<DashBoard handler={props.modeHandler} />} />
+        <Route
+          path="/auth/login"
+          element={<SignIn handler={props.modeHandler} />}
+        />
+        <Route
+          path="/auth/signup"
+          element={<Signup handler={props.modeHandler} />}
+        />
       </Routes>
     </>
   );
