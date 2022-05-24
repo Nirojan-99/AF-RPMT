@@ -8,6 +8,7 @@ router.use(fileUpload());
 
 //single document
 router
+  .get(DocumentCtrl.GetDoc)
   .post(DocumentCtrl.AddDocument)
   .put(DocumentCtrl.EditDoc)
   .delete(DocumentCtrl.DeleteDoc);

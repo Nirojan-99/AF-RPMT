@@ -119,3 +119,26 @@ exports.DeleteDoc = (req, res) => {
       return res.status(404).json({ deleted: false });
     });
 };
+
+//get doc
+exports.GetDoc = (req, res) => {
+  const { _id } = req.params;
+
+  DocumentModel.findById({ _id })
+    // .populate({ path: "group_id" })
+    .populate({
+      path: "submission_id",
+      select: "document marking_scheme title description",
+    })
+    .populate({ path: "submitted_by", select: "name" })
+    .then((data) => {
+      if (data._id) {
+        return res.status(200).json({ data });
+      } else {
+        return res.status(404).json({ fetched: false });
+      }
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
