@@ -13,4 +13,7 @@ router
   .put(DocumentCtrl.EditDoc)
   .delete(DocumentCtrl.DeleteDoc);
 
+//all document
+router.route("/").get(DocumentCtrl.GetDocs);
+
 module.exports = router;

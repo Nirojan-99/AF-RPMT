@@ -142,3 +142,22 @@ exports.GetDoc = (req, res) => {
       return res.status(404).json({ fetched: false });
     });
 };
+
+//get all doc by submission id
+exports.GetDocs = (req, res) => {
+  const { page, submission_id } = req.query;
+  const skip = (page - 1) * 20;
+  const limit = 20;
+
+  DocumentModel.find({ submission_id }, { skip, limit })
+    .then((data) => {
+      if (data) {
+        return res.status(200).json({ data });
+      } else {
+        return res.status(404).json({ fetched: false });
+      }
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
