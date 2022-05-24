@@ -97,3 +97,25 @@ exports.EditDoc = (req, res) => {
     return res.status(404).json({ updated: false });
   }
 };
+
+//delete doc
+exports.DeleteDoc = (req, res) => {
+  const { _id } = req.params;
+  DocumentModel.findByIdAndUpdate({ _id }, { url: "" })
+    .then((data) => {
+      if (data.url) {
+        const path = data.url.split("http://localhost:5000/")[1];
+        fs.unlink(path, (er) => {
+          if (er) {
+            console.log(er);
+          }
+        });
+        return res.status(200).json({ deleted: true });
+      } else {
+        return res.status(200).json({ deleted: true });
+      }
+    })
+    .catch((er) => {
+      return res.status(404).json({ deleted: false });
+    });
+};

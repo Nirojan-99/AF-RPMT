@@ -7,6 +7,9 @@ const DocumentCtrl = require("../Controller/DocumentCtrl");
 router.use(fileUpload());
 
 //single document
-router.post(DocumentCtrl.AddDocument).put(DocumentCtrl.EditDoc);
+router
+  .post(DocumentCtrl.AddDocument)
+  .put(DocumentCtrl.EditDoc)
+  .delete(DocumentCtrl.DeleteDoc);
 
 module.exports = router;
