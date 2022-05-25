@@ -17,7 +17,7 @@ router.route("/:_id/:user_id").get(DocumentCtrl.GetSubmissionDoc);
 
 //single document
 router
-
+  .route("/:_id")
   .get(DocumentCtrl.GetDoc)
   .post(DocumentCtrl.AddDocument)
   .put(DocumentCtrl.EditDoc)
