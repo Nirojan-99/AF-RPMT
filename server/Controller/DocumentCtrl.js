@@ -161,3 +161,28 @@ exports.GetDocs = (req, res) => {
       return res.status(404).json({ fetched: false });
     });
 };
+
+//get users doc
+exports.GetSubmissionDoc = (req, res) => {
+  const { _id, user_id } = req.params;
+
+  UserModel.findById({ _id: user_id }, { group_id: 1 })
+    .then((data) => {
+      const group_id = data.group_id;
+
+      DocumentModel.findOne({ submission_id: _id, group_id: group_id })
+        .populate({
+          path: "submission_id",
+          select: "title due_date due_time max_size",
+        })
+        .populate({ path: "submitted_by", select: "name" })
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((er) => {
+          console.log(er);
+          return res.status(404).json({ fetched: false });
+        });
+    })
+    .catch((er) => {});
+};
