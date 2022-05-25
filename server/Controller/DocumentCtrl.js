@@ -209,3 +209,32 @@ exports.GetUserDoc = (req, res) => {
       return res.status(404).json({ fetched: false });
     });
 };
+
+//get staff doc
+exports.GetStaffDoc = (req, res) => {
+  const { _id } = req.params;
+  const { submisson } = req.query;
+
+  UserModel.findById({ _id }, { groups: 1, pannel: 1 })
+    .then((data) => {
+      const array_of_grp = [...data.pannel, ...data.groups];
+
+      DocumentModel.find({
+        group_id: { $in: array_of_grp },
+        submission_id: submisson,
+      })
+        .then((data) => {
+          if (data) {
+            return res.status(200).json(data);
+          } else {
+            return res.status(404).json({ fetched: false });
+          }
+        })
+        .catch((er) => {
+          return res.status(404).json({ fetched: false });
+        });
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};

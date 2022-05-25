@@ -9,11 +9,15 @@ router.use(fileUpload());
 //user
 router.route("/users/:_id").get(DocumentCtrl.GetUserDoc);
 
+//staff
+router.route("/staff/:_id").get(DocumentCtrl.GetStaffDoc);
+
 //submision
 router.route("/:_id/:user_id").get(DocumentCtrl.GetSubmissionDoc);
 
 //single document
 router
+
   .get(DocumentCtrl.GetDoc)
   .post(DocumentCtrl.AddDocument)
   .put(DocumentCtrl.EditDoc)
