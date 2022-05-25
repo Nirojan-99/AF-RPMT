@@ -6,6 +6,9 @@ const DocumentCtrl = require("../Controller/DocumentCtrl");
 
 router.use(fileUpload());
 
+//user
+router.route("/users/:_id").get(DocumentCtrl.GetUserDoc);
+
 //submision
 router.route("/:_id/:user_id").get(DocumentCtrl.GetSubmissionDoc);
 

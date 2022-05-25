@@ -186,3 +186,26 @@ exports.GetSubmissionDoc = (req, res) => {
     })
     .catch((er) => {});
 };
+
+//get users all doc
+exports.GetUserDoc = (req, res) => {
+  const { _id } = req.params;
+  UserModel.findById({ _id }, { group_id: 1 })
+    .then((id) => {
+      DocumentModel.find({ group_id: id.group_id }, { url: 0 })
+        .populate({ path: "submission_id", select: "title" })
+        .then((data) => {
+          if (data) {
+            return res.status(200).json(data);
+          } else {
+            return res.status(404).json({ fetched: false });
+          }
+        })
+        .catch((er) => {
+          return res.status(404).json({ fetched: false });
+        });
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
