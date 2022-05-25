@@ -238,3 +238,21 @@ exports.GetStaffDoc = (req, res) => {
       return res.status(404).json({ fetched: false });
     });
 };
+
+//add grade
+exports.AddGrade = (req, res) => {
+  const { _id } = req.params;
+
+  const { grade, comments } = req.body;
+
+  DocumentModel.findByIdAndUpdate(
+    { _id },
+    { $set: { grade: grade, comments: comments, status: "marked" } }
+  )
+    .then((data) => {
+      return res.status(200).json({ added: true });
+    })
+    .catch((er) => {
+      return res.status(404).json({ added: false });
+    });
+};
