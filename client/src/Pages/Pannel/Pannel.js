@@ -13,7 +13,9 @@ import {
 import Header from "../../Components/Header";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 //react
-
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
@@ -21,6 +23,45 @@ import { red } from "@mui/material/colors";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 
 function Pannel(props) {
+  //user data
+  const { token, userID, URL } = useSelector((state) => state.loging);
+
+  //state
+  const [isLoaded, setLoaded] = useState(false);
+  const [groups, setGroups] = useState([]);
+
+  //useEffect
+  useEffect(() => {
+    axios
+      .get(`${URL}users/staff/pannel/${userID}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((res) => {
+        setLoaded(true);
+        setGroups(res.data);
+      })
+      .catch((er) => {
+        setLoaded(true);
+      });
+  }, []);
+
+  //handler
+  const handle = (action, id) => {
+    axios
+      .put(
+        `${URL}groups/topics/${id}`,
+        { action: action },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        toast(`topic ${action}ed successfully`, { type: "success" });
+      })
+      .catch((er) => {
+        toast(`unable to ${action} the topic,try again`, { type: "error" });
+      });
+  };
   return (
     <>
       <ToastContainer />
@@ -39,7 +80,26 @@ function Pannel(props) {
               alignItems={"stretch"}
               spacing={2}
               minHeight="25vh"
-            ></Grid>
+            >
+              {isLoaded ? (
+                groups ? (
+                  groups.map((row, index) => {
+                    return <Group handler={handle} key={index} data={row} />;
+                  })
+                ) : (
+                  <Typography sx={{ color: "#888", mt: 2 }}>
+                    No groups assigned
+                  </Typography>
+                )
+              ) : (
+                <>
+                  <GroupSkelton />
+                  <GroupSkelton />
+                  <GroupSkelton />
+                  <GroupSkelton />
+                </>
+              )}
+            </Grid>
           </Box>
         </Container>
       </Box>
@@ -127,43 +187,46 @@ const Group = (props) => {
             width: "100%",
           }}
         >
-          <>
-            <Box sx={{ flexGrow: 1 }} />
-            <Button
-              disabled={!props.data.research_Topic_doc}
-              onClick={() => {
-                props.handler("accept", props.data._id);
-              }}
-              sx={{
-                my: 1,
-                textTransform: "none",
-                color: "#ddd",
-                "&:hover": { color: "#fff", bgcolor: "#116BB1" },
-              }}
-            >
-              Accept
-            </Button>
-            <Button
-              disabled={!props.data.research_Topic_doc}
-              onClick={() => {
-                props.handler("reject", props.data._id);
-              }}
-              sx={{
-                ml: 1,
-                my: 1,
-                textTransform: "none",
-                color: "red",
-                "&:hover": { color: "#fff", bgcolor: "red" },
-              }}
-            >
-              Reject
-            </Button>
-          </>
-          <>
-            <Button disabled startIcon={<BeenhereIcon />}>
-              Topic {`${props.data.research_Topic.status}ed`}
-            </Button>
-          </>
+          {props.data.research_Topic.status === "false" ? (
+            <>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                disabled={!props.data.research_Topic_doc}
+                onClick={() => {
+                  props.handler("accept", props.data._id);
+                }}
+                sx={{
+                  my: 1,
+                  textTransform: "none",
+                  color: "#ddd",
+                  "&:hover": { color: "#fff", bgcolor: "#116BB1" },
+                }}
+              >
+                Accept
+              </Button>
+              <Button
+                disabled={!props.data.research_Topic_doc}
+                onClick={() => {
+                  props.handler("reject", props.data._id);
+                }}
+                sx={{
+                  ml: 1,
+                  my: 1,
+                  textTransform: "none",
+                  color: "red",
+                  "&:hover": { color: "#fff", bgcolor: "red" },
+                }}
+              >
+                Reject
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button disabled startIcon={<BeenhereIcon />}>
+                Topic {`${props.data.research_Topic.status}ed`}
+              </Button>
+            </>
+          )}
         </Box>
         {!props.data.research_Topic_doc && (
           <Typography sx={{ color: red[300], fontSize: 12 }}>
