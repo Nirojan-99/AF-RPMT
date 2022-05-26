@@ -2,8 +2,8 @@ const Router = require("express").Router;
 const router = Router();
 const fileUpload = require("express-fileupload");
 
-const auth = require("../Middleware/auth");
-const { authAdmin } = require("../Middleware/authAdmin");
+const auth = require("../Middlewares/auth");
+const { authAdmin } = require("../Middlewares/authAdmin");
 
 const DocumentCtrl = require("../Controller/DocumentCtrl");
 
