@@ -12,6 +12,11 @@ import {
 } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
 
+//react
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -29,6 +34,51 @@ function AllChatModel() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  //user data
+  const { token, userID, role, URL } = useSelector((state) => state.loging);
+
+  //state
+  const [groups, setGroups] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
+
+  //useEffect call
+  useEffect(() => {
+    if (role === "Staff") {
+      axios
+        .get(`${URL}users/staff/${userID}/groups?group=true`, {
+          headers: { Authorization: "Agriuservalidation " + token },
+        })
+        .then((re) => {
+          setLoaded(true);
+          setGroups(re.data);
+        })
+        .catch((er) => {
+          setLoaded(true);
+        });
+    } else {
+      axios
+        .get(`${URL}users/${userID}`, {
+          headers: { Authorization: "Agriuservalidation " + token },
+        })
+        .then((res) => {
+          axios
+            .get(`${URL}groups/admin/${res.data.group_id}`, {
+              headers: { Authorization: "Agriuservalidation " + token },
+            })
+            .then((res) => {
+              setGroups([res.data]);
+              setLoaded(true);
+            })
+            .catch((er) => {
+              setLoaded(true);
+            });
+        })
+        .catch((er) => {
+          setLoaded(true);
+        });
+    }
+  }, []);
 
   return (
     <>
@@ -52,38 +102,46 @@ function AllChatModel() {
             }}
             minWidth={{ xs: 300, sm: 400 }}
           >
-            <>No groups</>
-
-            <>
-              <Skeleton
-                animation="pulse"
-                variant="rectangular"
-                sx={{ borderRadius: 1, mb: 1 }}
-                width={"100%"}
-                height={70}
-              />
-              <Skeleton
-                animation="pulse"
-                variant="rectangular"
-                sx={{ borderRadius: 1, mb: 1 }}
-                width={"100%"}
-                height={70}
-              />
-              <Skeleton
-                animation="pulse"
-                variant="rectangular"
-                sx={{ borderRadius: 1, mb: 1 }}
-                width={"100%"}
-                height={70}
-              />
-              <Skeleton
-                animation="pulse"
-                variant="rectangular"
-                sx={{ borderRadius: 1, mb: 1 }}
-                width={"100%"}
-                height={70}
-              />
-            </>
+            {isLoaded ? (
+              groups ? (
+                groups.map((row, index) => {
+                  return <GroupChatModel key={index} data={row} />;
+                })
+              ) : (
+                <>No groups</>
+              )
+            ) : (
+              <>
+                <Skeleton
+                  animation="pulse"
+                  variant="rectangular"
+                  sx={{ borderRadius: 1, mb: 1 }}
+                  width={"100%"}
+                  height={70}
+                />
+                <Skeleton
+                  animation="pulse"
+                  variant="rectangular"
+                  sx={{ borderRadius: 1, mb: 1 }}
+                  width={"100%"}
+                  height={70}
+                />
+                <Skeleton
+                  animation="pulse"
+                  variant="rectangular"
+                  sx={{ borderRadius: 1, mb: 1 }}
+                  width={"100%"}
+                  height={70}
+                />
+                <Skeleton
+                  animation="pulse"
+                  variant="rectangular"
+                  sx={{ borderRadius: 1, mb: 1 }}
+                  width={"100%"}
+                  height={70}
+                />
+              </>
+            )}
           </Box>
         </Container>
       </Modal>

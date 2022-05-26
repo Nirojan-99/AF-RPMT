@@ -4,6 +4,13 @@ import Button from "@mui/material/Button";
 import { Avatar, Skeleton, Typography } from "@mui/material";
 import MessageBox from "./MessageBox";
 
+//react
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import { timeParser, dateParser } from "../../Utils/TimeFormatter";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -24,6 +31,28 @@ function GroupChatModel(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  //user data
+  const { token, userID, role, URL } = useSelector((state) => state.loging);
+
+  //state
+  const [date, setDate] = useState("");
+  const [isLoaded, setLoaded] = useState(false);
+
+  //use efffec
+  useEffect(() => {
+    axios
+      .get(`${URL}chats/${props.data._id}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((re) => {
+        setLoaded(true);
+        setDate(re.data);
+      })
+      .catch((er) => {
+        setLoaded(true);
+      });
+  }, []);
 
   return (
     <>
@@ -63,26 +92,30 @@ function GroupChatModel(props) {
                 fontFamily={"open sans"}
                 fontWeight={"700"}
                 color={"#DFDADA"}
+                //   variant="h4"
               >
                 {props.data.name}
               </Typography>
-
-              <Typography
-                fontFamily={"Amaranth"}
-                fontWeight={"500"}
-                color={"#8D8C8C"}
-              >
-                Date
-              </Typography>
-
-              <>
-                <Skeleton
-                  animation="pulse"
-                  variant="text"
-                  sx={{ borderRadius: 1, mb: 2 }}
-                  width={"100%"}
-                />
-              </>
+              {isLoaded ? (
+                date !== null && (
+                  <Typography
+                    fontFamily={"Amaranth"}
+                    fontWeight={"500"}
+                    color={"#8D8C8C"}
+                  >
+                    {dateParser(date) + " " + timeParser(date)}
+                  </Typography>
+                )
+              ) : (
+                <>
+                  <Skeleton
+                    animation="pulse"
+                    variant="text"
+                    sx={{ borderRadius: 1, mb: 2 }}
+                    width={"100%"}
+                  />
+                </>
+              )}
             </Box>
             <Box sx={{ flexGrow: 1 }} />
           </Box>
