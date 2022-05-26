@@ -6,6 +6,7 @@ const db = require("./db");
 
 //routers
 const DocumentRoute = require("./Router/DocumentRoute");
+const UserRouter = require("./Router/UserRoute");
 
 //middlewares
 app.use(BodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,7 @@ app.use("/Uploads", express.static("Uploads"));
 
 //routes
 app.use("/api/v1/documents", DocumentRoute);
+app.use("/api/v1/users", UserRouter);
 
 //start server
 db.initDb((err, db) => {
