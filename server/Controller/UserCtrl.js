@@ -264,6 +264,18 @@ exports.RemoveDp = (req, res) => {
   });
 };
 
+//get dp
+exports.GetDp = (req, res) => {
+  const { _id } = req.params;
+  UserModel.findById({ _id }, { dp: 1 })
+    .then((data) => {
+      return res.status(200).json({ dp: data.dp });
+    })
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
+
 //user register
 exports.Register = (req, res) => {
   //incomming data
