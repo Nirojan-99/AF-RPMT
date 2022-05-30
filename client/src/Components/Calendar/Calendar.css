@@ -1,0 +1,68 @@
+.table {
+  margin: 0 auto 3px;
+  border-radius: .2rem;
+  background-color: #0a4470;
+  height: 55px;
+  width: 350px;
+  align-items: center;
+  padding: .3rem;
+}
+
+table td:not([align]),
+table th:not([align]) {
+  text-align: center;
+}
+
+.table th {
+  border: 1px solid #dbdbdb;
+}
+
+.table td,
+.table th {
+  border-width: 0 0;
+  vertical-align: top;
+  text-align: center;
+  padding-block-start: 0px;
+  padding: .5rem;
+  text-align: justify;
+  font-weight: 600;
+  color: #fff;
+}
+
+.today {
+  background-color: #E28743;
+  color: #fff;
+  cursor: pointer;
+  border-radius: .2rem;
+}
+
+.in-prev-month,
+.in-next-month {
+  opacity: 0.3;
+  color: #333;
+  background-color: #1470b7;
+}
+
+.button {
+  margin: 0 10px;
+  background-color: #0a4470;
+  border: 0;
+  outline: 0;
+  padding: 5px 10px;
+  border-radius: 0;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+a {
+  color: #333;
+
+}
+
+.bottom {
+  margin: 0 auto 3px;
+  width: 350px;
+  border-radius: .2rem;
+  background-color: #073050;
+}

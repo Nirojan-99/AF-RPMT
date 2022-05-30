@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import Header from "../../Components/Header";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import ArticleIcon from "@mui/icons-material/Article";
 
 //react
 import { useParams } from "react-router-dom";
@@ -21,7 +20,7 @@ import { timeParser, dateParser } from "../../Utils/TimeFormatter";
 
 function Info(props) {
   //user data
-  const { token, userID, role, URL } = useSelector((state) => state.loging);
+  const { token, role, URL } = useSelector((state) => state.loging);
 
   //submission id
   const { id } = useParams();
@@ -99,23 +98,27 @@ function Info(props) {
                   {submission.title}
                 </Button>
                 <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  sx={{
-                    color: "#116BB1",
-                    textTransform: "none",
-                    fontWeight: "700",
-                  }}
-                  variant="outlined"
-                  color="info"
-                  href={"/submit/add/" + submission._id}
-                >
-                  Add Submisson
-                </Button>
+                {role === "Student" && (
+                  <Button
+                    sx={{
+                      color: "#116BB1",
+                      textTransform: "none",
+                      fontWeight: "700",
+                    }}
+                    variant="outlined"
+                    color="info"
+                    href={"/submit/add/" + submission._id}
+                  >
+                    Add Submisson
+                  </Button>
+                )}
               </Box>
             </Container>
           ) : (
-            <Typography sx={{ color: "red", textAlign: "center", mt: 4 }}>
-              No data available
+            <Typography
+              sx={{ color: "#bbb", textAlign: "center", mt: 4, fontSize: 20 }}
+            >
+              No Data available
             </Typography>
           )
         ) : (
@@ -125,7 +128,7 @@ function Info(props) {
               variant="rectangular"
               sx={{ borderRadius: 1, mb: 2 }}
               width={"100%"}
-              height={400}
+              height={450}
             />
           </Container>
         )}

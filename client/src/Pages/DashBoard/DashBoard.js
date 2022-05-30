@@ -1,4 +1,11 @@
-import { Container, Box, Paper, IconButton, Skeleton } from "@mui/material";
+import {
+  Container,
+  Box,
+  Paper,
+  Skeleton,
+  Typography,
+  Grid,
+} from "@mui/material";
 import Header from "../../Components/Header";
 import {
   Timeline,
@@ -9,11 +16,11 @@ import {
   TimelineDot,
   TimelineContent,
 } from "@mui/lab";
-import SingleTimelineItem from "./SingleTimelineItem";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import SummarizeIcon from "@mui/icons-material/Summarize";
-import ArticleIcon from "@mui/icons-material/Article";
+import SingleTimelineItem from "./SignleTimelineItem";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+
+import { dateParser } from "../../Utils/TimeFormatter";
+import Calendar from "../../Components/Calendar/Calendar";
 
 //react
 import { useSelector } from "react-redux";
@@ -23,11 +30,12 @@ import axios from "axios";
 
 function DashBoard(props) {
   //user data
-  const { token, userID, role, URL } = useSelector((state) => state.loging);
+  const { token, role, URL } = useSelector((state) => state.loging);
 
   //state
   const [submissions, setSubmissions] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
+  const [dates, setDates] = useState([]);
 
   //use effct call
   useEffect(() => {
@@ -39,6 +47,11 @@ function DashBoard(props) {
         setLoaded(true);
         if (res.data) {
           setSubmissions(res.data.data);
+          let array = [];
+          res.data.data.filter((row) => {
+            array.push(dateParser(row.due_date));
+          });
+          setDates(array);
         }
       })
       .catch((er) => {
@@ -52,37 +65,51 @@ function DashBoard(props) {
 
       <Paper elevation={2} square>
         <Box width="100%" minHeight={"83vh"}>
-          <Container maxWidth="md" sx={{ textAlign: "left" }}>
-            <Box py={3}>
-              <Paper elevation={3}>
-                <Box p={1} sx={{ bgcolor: "#073050", borderRadius: "3px" }}>
-                  <Timeline position="right">
-                    {role === "Admin" && <NewSubmission />}
-                    {isLoaded ? (
-                      submissions.length > 0 ? (
-                        submissions.map((row, index) => {
-                          return (
-                            <SingleTimelineItem
-                              data={row}
-                              key={index}
-                              icon="doc"
-                            />
-                          );
-                        })
-                      ) : (
-                        <></>
-                      )
-                    ) : (
-                      <>
-                        <SubSkelton />
-                        <SubSkelton />
-                        <SubSkelton />
-                      </>
-                    )}
-                  </Timeline>
+          <Container maxWidth="lg" sx={{ textAlign: "left" }}>
+            <Grid container justifyContent={"space-evenly"}>
+              <Grid item xs={12} md={8}>
+                <Box py={3}>
+                  <Paper elevation={3}>
+                    <Box
+                      p={{ xs: 0.2, sm: 1 }}
+                      sx={{ bgcolor: "#073050", borderRadius: "3px" }}
+                    >
+                      <Timeline position="right">
+                        {role === "Admin" && <NewSubmission />}
+                        {isLoaded ? (
+                          submissions.length > 0 ? (
+                            submissions.map((row, index) => {
+                              return (
+                                <SingleTimelineItem
+                                  data={row}
+                                  key={index}
+                                  icon="doc"
+                                />
+                              );
+                            })
+                          ) : (
+                            <Typography sx={{ color: "#fff" }}>
+                              {role !== "Admin" && "No Submissions available"}
+                            </Typography>
+                          )
+                        ) : (
+                          <>
+                            <SubSkelton />
+                            <SubSkelton />
+                            <SubSkelton />
+                          </>
+                        )}
+                      </Timeline>
+                    </Box>
+                  </Paper>
                 </Box>
-              </Paper>
-            </Box>
+              </Grid>
+              <Grid item md={4}>
+                <Box ml={{ xs: 0, md: 1 }} py={{ xs: 1, md: 3 }}>
+                  <Calendar />
+                </Box>
+              </Grid>
+            </Grid>
           </Container>
         </Box>
       </Paper>
@@ -103,13 +130,12 @@ const SubSkelton = () => {
       <TimelineSeparator>
         <TimelineConnector />
         <TimelineDot color="info">
-          <AddBoxIcon
-            sx={{
-              height: "30px",
-              width: "30px",
-              cursor: "pointer",
-              color: "#1071bc",
-            }}
+          <Skeleton
+            animation="pulse"
+            variant="circular"
+            sx={{ borderRadius: 1 }}
+            width={30}
+            height={30}
           />
         </TimelineDot>
         <TimelineConnector />
@@ -122,7 +148,7 @@ const SubSkelton = () => {
           width={"100%"}
           height={"100%"}
         />
-        <Box my={1} pt={1} pl={{ xs: 1, sm: 2 }} minHeight="40px"></Box>
+        <Box my={1} pt={1} pl={{ xs: 1, sm: 2 }} minHeight="30px"></Box>
       </TimelineContent>
     </TimelineItem>
   );
@@ -174,9 +200,10 @@ const NewSubmission = () => {
             color: "#073050",
             textAlign: "center",
             "&:hover": {
-              bgcolor: "#888",
+              bgcolor: "#E28743",
               color: "#fff",
             },
+            transitionDuration: ".4s",
           }}
         >
           Add new submission

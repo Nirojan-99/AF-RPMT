@@ -2,23 +2,30 @@ import { Box } from "@mui/system";
 import { Button, Grid, Typography } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BackupIcon from "@mui/icons-material/Backup";
-import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import TocIcon from "@mui/icons-material/Toc";
 
 //utils
 import { timeParser, dateParser } from "../../Utils/TimeFormatter";
 
 function Content(props) {
+  //hook
+  const navigate = useNavigate();
+
+  //user data
+  const { role } = useSelector((state) => state.loging);
+
   return (
     <>
       <Box
         my={3}
         pt={0.5}
         pl={{ xs: 1, sm: 2 }}
-        // height={"50px"}
         minHeight="50px"
         sx={{
           bgcolor: "#1385E1",
-          borderRadius: "6px",
+          borderRadius: 1,
           display: "flex",
           alignItems: "center",
         }}
@@ -30,19 +37,44 @@ function Content(props) {
           direction="row"
         >
           <Grid item sm={4} xs={6}>
-            <Grid container direction={"row"}>
+            <Grid
+              container
+              direction={"column"}
+              alignItems={"start"}
+              justifyContent={"start"}
+              sx={{ ml: { xs: 1, sm: 0 } }}
+            >
               <Grid item>
-                <Button
-                  href={"/submission/" + props.data._id}
-                  align="left"
+                <Box
                   sx={{
-                    fontSize: { xs: 10, sm: 15 },
-                    textTransform: "none",
-                    color: "#073050",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onClick={() => {
+                    navigate("/submission/" + props.data._id);
                   }}
                 >
-                  {props.data.title}
-                </Button>
+                  <TocIcon
+                    sx={{
+                      color: "#073050",
+                      pr: 0.5,
+                      display: { xs: "none", sm: "block" },
+                    }}
+                  />
+                  <Typography
+                    align="left"
+                    sx={{
+                      cursor: "pointer",
+                      fontSize: { xs: 15, sm: 17 },
+                      textTransform: "none",
+                      color: "#073050",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {props.data.title}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid display={{ xs: "block", sm: "none" }} item>
                 <Typography
@@ -51,7 +83,7 @@ function Content(props) {
                   fontWeight={"bold"}
                   variant="h4"
                   align="left"
-                  sx={{ color: "#DFDADA", fontFamily: "Arial" }}
+                  sx={{ color: "#073050", fontFamily: "Arial" }}
                 >
                   {dateParser(props.data.due_date) +
                     " - " +
@@ -60,13 +92,14 @@ function Content(props) {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item xs={5} display={{ xs: "none", sm: "block" }}>
             <Typography
               fontSize={13}
               fontWeight={"bold"}
               variant="h4"
               align="left"
-              sx={{ color: "#DFDADA", fontFamily: "Arial" }}
+              sx={{ color: "#073050", fontFamily: "Arial" }}
             >
               <Grid
                 container
@@ -88,15 +121,28 @@ function Content(props) {
           <Grid xs={6} sm={3}>
             <Typography variant="h4">
               <Button
-                variant="contained"
+                variant="outlined"
                 size="small"
                 disableElevation
-                href={"/submit/add/" + props.data._id}
-                startIcon={props.icon === "doc" ? <BackupIcon /> : <EditIcon />}
-                color="secondary"
-                sx={{ textTransform: "none", fontFamily: "open sans" }}
+                href={
+                  (role === "Admin"
+                    ? "/submission/edit/" + props.data._id
+                    : "/submit/add/" + props.data._id)
+                }
+                startIcon={<BackupIcon />}
+                sx={{
+                  color: "#333",
+                  textTransform: "capitalize",
+                  fontFamily: "open sans",
+                  fontSize: { xs: 12, sm: 15 },
+                  borderColor: "#99ddff",
+                  bgcolor: "#99ddff",
+                  "&:hover": { bgcolor: "#073050", color: "#fff" },
+                }}
               >
-                Submit
+                {role === "Admin" && "Edit"}
+                {role === "Staff" && "View"}
+                {role === "Student" && "Submit"}
               </Button>
             </Typography>
           </Grid>
