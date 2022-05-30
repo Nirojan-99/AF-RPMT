@@ -1,38 +1,16 @@
-import {
-  Paper,
-  Box,
-  Grid,
-  TextField,
-  IconButton,
-  FormControl,
-  Skeleton,
-} from "@mui/material";
+import { Paper, Box, Skeleton } from "@mui/material";
 import { Container } from "@mui/material";
 import Heading from "../../Components/Heading";
 import Header from "../../Components/Header";
 import Submission from "./Submission";
-import SearchIcon from "@mui/icons-material/Search";
 import { makeStyles } from "@mui/styles";
 
 //react
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
-
-const useStyle = makeStyles({
-  inputs: {
-    color: "#99ccff",
-    background: "rgb(6, 74, 130)",
-    borderRadius: "5px",
-    fontFamily: "arial",
-    fontWeight: "600",
-    letterSpacing: ".5px",
-  },
-});
 
 function AllSubmissions(props) {
   //user data
@@ -42,17 +20,15 @@ function AllSubmissions(props) {
   const [submissions, setSubmissions] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  const classes = useStyle();
   const { id } = useParams();
 
   //useEffect call
   useEffect(() => {
     axios
-      .get(`${URL}documents/staff/${userID}?submisson=${id}`,  {
+      .get(`${URL}documents/staff/${userID}?submisson=${id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         setLoaded(true);
         setSubmissions(res.data);
       })

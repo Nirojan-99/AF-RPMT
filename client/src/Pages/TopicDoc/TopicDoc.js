@@ -3,7 +3,7 @@ import Header from "../../Components/Header";
 import PublishIcon from "@mui/icons-material/Publish";
 
 //react
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router-dom";

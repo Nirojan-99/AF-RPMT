@@ -26,7 +26,6 @@ function ASubmission(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         setGroup(res.data);
         setLoaded(true);
       })

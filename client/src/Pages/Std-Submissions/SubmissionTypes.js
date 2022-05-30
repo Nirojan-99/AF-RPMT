@@ -8,7 +8,7 @@ import axios from "axios";
 
 function SubmissionTypes(props) {
   //user data
-  const { token, userID, role, URL } = useSelector((state) => state.loging);
+  const { token, URL } = useSelector((state) => state.loging);
 
   //state
   const [submissions, setSubmissions] = useState([]);

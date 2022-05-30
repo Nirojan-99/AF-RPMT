@@ -36,7 +36,6 @@ function Info(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data.data);
         setLoaded(true);
         if (res.data) {
           setSubmission(res.data.data);

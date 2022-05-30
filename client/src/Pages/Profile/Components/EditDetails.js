@@ -327,7 +327,6 @@ function EditDetails() {
                           value={DOB}
                           onChange={(event) => {
                             setDOB(event.target.value);
-                            console.log(event.target.value);
                           }}
                           margin="none"
                           size="small"

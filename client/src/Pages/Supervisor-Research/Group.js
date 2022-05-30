@@ -36,7 +36,6 @@ function Group(props) {
       })
       .then((res) => {
         setLoaded(true);
-        console.log(res.data);
         if (res.data) {
           setGroup(res.data);
         }

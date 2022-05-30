@@ -15,7 +15,6 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import MessageIcon from "@mui/icons-material/Message";
 import { dark, light } from "../Store/theme";
 
 import logo from "../Assets/logo.png";
@@ -27,9 +26,9 @@ import AllChatModel from "../Pages/ChatModel/AllChatModel";
 
 function Header(props) {
   //auth
-  const { token, userID, role } = useSelector((state) => state.loging);
+  const { token, role } = useSelector((state) => state.loging);
 
-  const [auth, setAuth] = useState();
+  const [auth, setAuth] = useState(token);
   const [anchorEl, setAnchorEl] = useState(null);
 
   //mode
@@ -89,7 +88,7 @@ function Header(props) {
               </IconButton>
             </Tooltip>
 
-            {!token && (
+            {!auth && (
               <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}>
                 <Link href="/auth/sign-in">
                   <Button key={"login"} color="info">
@@ -105,7 +104,7 @@ function Header(props) {
             )}
 
             {/*user profile*/}
-            {token && (
+            {auth && (
               <div>
                 {role !== "Admin" && <AllChatModel />}
                 <Tooltip title="profile">
@@ -133,9 +132,9 @@ function Header(props) {
                   <MenuItem onClick={profilehandler}>Profile</MenuItem>
                   <MenuItem
                     onClick={() => {
-                      setAuth(false);
+                      setAuth("");
                       dispatch(logout());
-                      window.location.reload();
+                      history("/login", { replace: true });
                     }}
                   >
                     Log Out

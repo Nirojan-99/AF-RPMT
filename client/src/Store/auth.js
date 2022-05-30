@@ -29,6 +29,10 @@ const authStore = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       localStorage.removeItem("userID");
+
+      state.role = "";
+      state.userID = "";
+      state.token = "";
     },
   },
 });

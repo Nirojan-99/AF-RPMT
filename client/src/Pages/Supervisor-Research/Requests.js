@@ -26,7 +26,6 @@ function Requests() {
       })
       .then((res) => {
         setGroups(res.data);
-        console.log(res.data);
         setLoaded(true);
       })
       .catch((er) => {

@@ -67,7 +67,6 @@ function RequestSupervisor(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         setLoaded(true);
         if (res.data.supervisor) {
           setSupervisor(true);
@@ -77,7 +76,6 @@ function RequestSupervisor(props) {
         }
       })
       .catch((er) => {
-        console.log(er);
         setLoaded(true);
       });
   }, []);
@@ -94,7 +92,6 @@ function RequestSupervisor(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data.data);
         setSearchLoaded(true);
         setSearchval(res.data.data);
       })

@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function GroupRequest(props) {
   //user data
-  const { token, userID, role, URL } = useSelector((state) => state.loging);
+  const { token, URL } = useSelector((state) => state.loging);
 
   //handle req
   const handleRequest = (status) => {
@@ -32,7 +32,6 @@ function GroupRequest(props) {
   };
   return (
     <Box my={1} p={1.2} bgcolor="#eee" borderRadius={3}>
-      <ToastContainer />
       <Grid
         container
         direction={"row"}

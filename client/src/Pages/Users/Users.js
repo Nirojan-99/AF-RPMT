@@ -27,7 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Users(props) {
   //user data
-  const { token, userID, URL } = useSelector((state) => state.loging);
+  const { token,  URL } = useSelector((state) => state.loging);
 
   //pagination
   const [page, setPage] = useState(1);
