@@ -166,4 +166,27 @@ exports.GetAdminGroup = (req, res) => {
         return res.status(404).json({ fetched: false });
       });
   };
+
+  //add pannel
+exports.AddPannel = (req, res) => {
+    const { _id, staff_id } = req.params;
+  
+    GroupModel.findByIdAndUpdate({ _id }, { $push: { pannel: staff_id } })
+      .then((data) => {
+        UserModel.findByIdAndUpdate(
+          { _id: staff_id },
+          { $push: { pannel: _id } },
+          { upsert: true }
+        )
+          .then((data1) => {
+            return res.status(200).json({ added: true });
+          })
+          .catch((er) => {
+            return res.status(404).json({ added: false });
+          });
+      })
+      .catch((er) => {
+        return res.status(404).json({ added: false });
+      });
+  };
   

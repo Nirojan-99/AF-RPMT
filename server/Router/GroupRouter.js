@@ -22,3 +22,9 @@ router
 router.route("/").get(auth, authAdmin, GroupCtrl.GetGroups); //get all grps
 router.route("/admin/:_id").get(auth, GroupCtrl.GetAdminGroup); //get single grp
 module.exports = router;
+
+//add & remove pannel
+router
+  .route("/pannel/:_id/:staff_id")
+  .put(auth, authAdmin, GroupCtrl.AddPannel)
+  .delete(auth, authAdmin, GroupCtrl.RemovePannel);
