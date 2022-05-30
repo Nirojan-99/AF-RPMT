@@ -370,3 +370,32 @@ exports.GetGroup = (req, res) => {
     }
   };
   
+  //new group
+exports.AddGroup = (req, res) => {
+    const { research_Field, research_Topic, name } = req.body;
+  
+    const { _id } = req.params;
+  
+    const newGroup = new GroupModel({
+      research_Field,
+      research_Topic: { name: research_Topic },
+      name,
+      leader: _id,
+    });
+    newGroup.members.push(_id);
+  
+    newGroup
+      .save()
+      .then((data) => {
+        UserModel.updateOne(
+          { _id },
+          { $set: { group_id: data._id } },
+          { upsert: true }
+        ).then((data) => {
+          return res.status(200).json({ added: true });
+        });
+      })
+      .catch((er) => {
+        return res.status(404).json({ added: false });
+      });
+  };
