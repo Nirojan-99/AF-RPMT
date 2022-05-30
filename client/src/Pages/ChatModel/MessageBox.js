@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import { timeParser, dateParser } from "../../Utils/TimeFormatter";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,6 +28,65 @@ const style = {
 };
 
 const MessageBox = (props) => {
+  //user data
+  const { token, userID, URL } = useSelector((state) => state.loging);
+
+  //state
+  const [messages, setMessages] = useState([]);
+  const [msg, setMsg] = useState("");
+  const [isLoaded, setLoaded] = useState(false);
+  const [isSent, setSent] = useState(false);
+
+  //use efffec
+  useEffect(() => {
+    axios
+      .get(`${URL}chats/${props.id}/${userID}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((re) => {
+        console.log(re.data);
+        setLoaded(true);
+        setMessages(re.data);
+      })
+      .catch((er) => {
+        setLoaded(true);
+      });
+  }, [isSent]);
+
+  // setTimeout(() => {
+  //   axios
+  //     .get(`${URL}chats/${props.id}/${userID}`, {
+  //       headers: { Authorization: "Agriuservalidation " + token },
+  //     })
+  //     .then((re) => {
+  //       setMessages(re.data);
+  //     })
+  //     .catch((er) => {});
+  // }, 100000);
+
+  //send message
+  const sendMsg = () => {
+    if (!msg.trim()) {
+      return;
+    }
+    setSent(false);
+    axios
+      .put(
+        `${URL}chats/${props.id}/${userID}`,
+        { message: msg },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        setSent(true);
+        setMsg("");
+      })
+      .catch((er) => {
+        setMsg("");
+      });
+  };
+
   return (
     <Modal open={props.open} onClose={props.handleClose}>
       <Box sx={{ ...style, width: 700 }}>
@@ -64,10 +125,26 @@ const MessageBox = (props) => {
             flexDirection: "column",
           }}
         >
-          <RightMessage />
-          <LeftMessage />
-          <RightSkelton />
-          <LeftSkelton />
+          {isLoaded ? (
+            messages ? (
+              messages.map((row, index) => {
+                if (row.sender._id == userID) {
+                  return <RightMessage key={index} data={row} />;
+                } else {
+                  return <LeftMessage key={index} data={row} />;
+                }
+              })
+            ) : (
+              <></>
+            )
+          ) : (
+            <Box>
+              <LeftSkelton />
+              <RightSkelton />
+              <LeftSkelton />
+              <RightSkelton />
+            </Box>
+          )}
         </Box>
         <Box sx={{ height: "12%", backgroundColor: "grey" }}>
           {/* bottom */}
