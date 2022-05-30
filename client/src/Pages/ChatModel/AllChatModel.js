@@ -9,6 +9,7 @@ import {
   Badge,
   Tooltip,
   Container,
+  Typography,
 } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
 
@@ -108,7 +109,9 @@ function AllChatModel() {
                   return <GroupChatModel key={index} data={row} />;
                 })
               ) : (
-                <>No groups</>
+                <Typography sx={{ fontSize: 12, textAlign: "center", mt: 3 }}>
+                  No Assigned Groups Found
+                </Typography>
               )
             ) : (
               <>

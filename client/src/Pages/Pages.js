@@ -2,8 +2,8 @@ import { Navigate } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 //import pages
-import SignIn from "./Auth/SignIn/SignIn";
-import SignUp from "./Auth/SignUp/SignUp";
+import SignIn from "./Auth/Login/Signin";
+import SignUp from "./Auth/Signup/Signup";
 import Profile from "./Profile/Profile";
 import DashBoard from "./DashBoard/DashBoard";
 import Submissions from "./Std-Submissions/Submissions";
@@ -14,10 +14,10 @@ import Users from "./Users/Users";
 import User from "./Users/User";
 import NewSubmission from "./NewSubmission/NewSubmission";
 import SubmissionTypes from "./Std-Submissions/SubmissionTypes";
-import ResearchSup from "./Supervisor-Research/Reserch-sup";
-import Group from "./Supervisor-Research/Group";
-import Groups from "./Groups/Groups";
-import GroupView from "./Groups/GroupView";
+// import ResearchSup from "./Supervisor-Research/Reserch-sup";
+// import Group from "./Supervisor-Research/Group";
+// import Groups from "./Groups/Groups";
+// import GroupView from "./Groups/GroupView";
 import ResetPassword from "./ResetPassword/ResetPassword";
 import TopicDoc from "./TopicDoc/TopicDoc";
 import Pannel from "./Pannel/Pannel";
@@ -89,22 +89,22 @@ function Pages(props) {
                   path="/pannel"
                   element={<Pannel handler={props.modeHandler} />}
                 />
-                <Route
+                {/* <Route
                   path="/Groups"
                   element={<Groups handler={props.modeHandler} />}
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path="/Groups/:id"
                   element={<GroupView handler={props.modeHandler} />}
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path="/research/sup"
                   element={<ResearchSup handler={props.modeHandler} />}
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path="/research/grp/:id"
                   element={<Group handler={props.modeHandler} />}
-                />
+                /> */}
                 <Route
                   path="/Submissions"
                   element={<SubmissionTypes handler={props.modeHandler} />}

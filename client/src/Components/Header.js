@@ -10,6 +10,7 @@ import {
   Tooltip,
   Button,
   Link,
+  Divider,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -26,7 +27,7 @@ import AllChatModel from "../Pages/ChatModel/AllChatModel";
 
 function Header(props) {
   //auth
-  const { token, userID ,role} = useSelector((state) => state.loging);
+  const { token, userID, role } = useSelector((state) => state.loging);
 
   const [auth, setAuth] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,104 +54,100 @@ function Header(props) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar color={"primary"} position="sticky">
-        <Toolbar>
-          <Button href="/">
-            <img alt="dd" src={logo} width="100px" />
-          </Button>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}></Box>
-          <Tooltip title={mode === "dark" ? "light theme" : "dark theme"}>
-            <IconButton
-              size="large"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              // onClick={handleMenu}
-              color="inherit"
-              onClick={() => {
-                setMode((prevMode) =>
-                  prevMode === "light" ? "dark" : "light"
-                );
-                if (Tmode === "light") {
-                  dispatch(dark());
-                } else {
-                  dispatch(light());
-                }
-              }}
-            >
-              {mode === "light" ? (
-                <DarkModeIcon fontSize="inherit" />
-              ) : (
-                <LightModeIcon fontSize="inherit" />
-              )}
-            </IconButton>
-          </Tooltip>
-
-          {!token && (
-            <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}>
-              <Link href="/auth/sign-in">
-                <Button key={"login"} color="info">
-                  Log In
-                </Button>
-              </Link>
-              <Link href="/auth/sign-up">
-                <Button key={"signup"} color="info">
-                  Sign up
-                </Button>
-              </Link>
-            </Box>
-          )}
-
-          {/*user profile*/}
-          {token && (
-            <div>
-              {role !== "Admin" && <AllChatModel />}
-              {/* <Tooltip title={"Chat"}>
-                <IconButton href="/chat" size="large" color="inherit">
-                  <Badge badgeContent={1} color="error">
-                    <MessageIcon fontSize="inherit" />
-                  </Badge>
-                </IconButton>
-              </Tooltip> */}
-              <Tooltip title="profile">
-                <IconButton size="large" onClick={handleMenu} color="inherit">
-                  <AccountCircle fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                color="#e28743"
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar color={"primary"} position="sticky">
+          <Toolbar>
+            <Button href="/">
+              <img alt="dd" src={logo} width="100px" />
+            </Button>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}></Box>
+            <Tooltip title={mode === "dark" ? "light theme" : "dark theme"}>
+              <IconButton
+                size="large"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                // onClick={handleMenu}
+                color="inherit"
+                onClick={() => {
+                  setMode((prevMode) =>
+                    prevMode === "light" ? "dark" : "light"
+                  );
+                  if (Tmode === "light") {
+                    dispatch(dark());
+                  } else {
+                    dispatch(light());
+                  }
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
               >
-                <MenuItem onClick={profilehandler}>Profile</MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setAuth(false);
-                    dispatch(logout());
-                    window.location.reload();
+                {mode === "light" ? (
+                  <DarkModeIcon fontSize="inherit" />
+                ) : (
+                  <LightModeIcon fontSize="inherit" />
+                )}
+              </IconButton>
+            </Tooltip>
+
+            {!token && (
+              <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}>
+                <Link href="/auth/sign-in">
+                  <Button key={"login"} color="info">
+                    Log In
+                  </Button>
+                </Link>
+                <Link href="/auth/sign-up">
+                  <Button key={"signup"} color="info">
+                    Sign up
+                  </Button>
+                </Link>
+              </Box>
+            )}
+
+            {/*user profile*/}
+            {token && (
+              <div>
+                {role !== "Admin" && <AllChatModel />}
+                <Tooltip title="profile">
+                  <IconButton size="large" onClick={handleMenu} color="inherit">
+                    <AccountCircle fontSize="inherit" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  color="#e28743"
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
                   }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
                 >
-                  Log Out
-                </MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+                  <MenuItem onClick={profilehandler}>Profile</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setAuth(false);
+                      dispatch(logout());
+                      window.location.reload();
+                    }}
+                  >
+                    Log Out
+                  </MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <Divider />
+    </>
   );
 }
 

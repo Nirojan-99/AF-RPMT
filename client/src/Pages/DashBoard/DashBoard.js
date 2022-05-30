@@ -16,7 +16,7 @@ import {
   TimelineDot,
   TimelineContent,
 } from "@mui/lab";
-import SingleTimelineItem from "./SignleTimelineItem";
+import SingleTimelineItem from "./SingleTimelineItem";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 import { dateParser } from "../../Utils/TimeFormatter";
@@ -44,6 +44,7 @@ function DashBoard(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
+        console.log(res.data)
         setLoaded(true);
         if (res.data) {
           setSubmissions(res.data.data);

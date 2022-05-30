@@ -25,7 +25,7 @@ const useStyle = makeStyles({
 function LeftMessage(props) {
   const classes = useStyle();
   return (
-    <Box>
+    <Box >
       <Box
         maxWidth={600}
         minWidth={300}
