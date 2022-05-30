@@ -35,3 +35,6 @@ router
 .put(auth, authStaff, GroupCtrl.UpdateRequest) //for staff
 .patch(auth, GroupCtrl.HandleRequest) //for groups
 .delete(auth, authStaff, GroupCtrl.LeftGroup); //remove from group
+
+//get group requests data
+router.route("/requests/:_id").get(auth, GroupCtrl.GetRequestedStd);

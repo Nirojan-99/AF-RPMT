@@ -331,4 +331,20 @@ exports.LeftGroup = (req, res) => {
         return res.status(404).json({ left: false });
       });
   };
+
+  //get all requested students
+exports.GetRequestedStd = (req, res) => {
+    const { _id } = req.params;
   
+    GroupModel.findById({ _id })
+      .populate({
+        path: "requests",
+        select: "name mobile_number email gender dp",
+      })
+      .then((data) => {
+        return res.status(200).json(data.requests);
+      })
+      .catch((er) => {
+        return res.status(404).json({ fetched: false });
+      });
+  };
