@@ -15,7 +15,6 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import MessageIcon from "@mui/icons-material/Message";
 import { dark, light } from "../Store/theme";
 
 import logo from "../Assets/logo.png";

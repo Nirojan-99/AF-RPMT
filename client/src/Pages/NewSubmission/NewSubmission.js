@@ -334,8 +334,8 @@ function NewSubmission(props) {
                     <TextField
                       multiline
                       size="small"
-                      maxRows={5}
-                      minRows={4}
+                      maxRows={7}
+                      minRows={5}
                       fullWidth
                       margin="normal"
                       label="Description"
@@ -352,7 +352,7 @@ function NewSubmission(props) {
                       variant="rectangular"
                       sx={{ borderRadius: 1, my: 1.5 }}
                       width={"100%"}
-                      height={100}
+                      height={120}
                     />
                   )}
                   {id &&

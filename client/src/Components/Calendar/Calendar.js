@@ -29,25 +29,16 @@ const Calendar = () => {
     getPrevMonth,
   } = useCalendar();
 
-  const dateClickHandler = (date) => {
-    // history("/calendar/" + date);
-    return <Tooltip title="sss">val</Tooltip>;
-  };
-  const dateClickHandlerN = (date) => {
-    return <Tooltip title="sss">val</Tooltip>;
-  };
-
   //user data
   const { token, role, URL } = useSelector((state) => state.loging);
 
   //state
-  const [submissions, setSubmissions] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
   const [dates, setDates] = useState([]);
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
 
-  //use effct call
+  //use effect call
   useEffect(() => {
     axios
       .get(`${URL}submissions`, {
@@ -56,7 +47,6 @@ const Calendar = () => {
       .then((res) => {
         setLoaded(true);
         if (res.data) {
-          setSubmissions(res.data.data);
           let array = [];
           res.data.data.filter((row) => {
             array.push({
@@ -152,17 +142,12 @@ const Calendar = () => {
                   {cols.map((col) =>
                     col.date === todayFormatted ||
                     dates.some((row) => row.date == col.date) ? (
-                      <td
-                        key={col.date}
-                        className={`${col.classes} today`}
-                        onClick={() => dateClickHandler(col.date)}
-                      >
+                      <td key={col.date} className={`${col.classes} today`}>
                         <Box
                           onClick={() => {
-                            console.log("ss");
                             const val = redirect(col.date);
                             if (val !== null) {
-                              history(val);
+                              role === "Student" && history(val);
                             }
                           }}
                         >
@@ -172,11 +157,7 @@ const Calendar = () => {
                         </Box>
                       </td>
                     ) : (
-                      <td
-                        key={col.date}
-                        className={col.classes}
-                        onClick={() => dateClickHandlerN(col.date)}
-                      >
+                      <td key={col.date} className={col.classes}>
                         {col.value}
                       </td>
                     )
