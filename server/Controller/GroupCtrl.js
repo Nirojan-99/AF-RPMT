@@ -15,3 +15,18 @@ exports.SearchGroup = (req, res) => {
         return res.status(404).json({ fetched: false });
       });
   };
+
+  //get topic status
+exports.GetStatus = (req, res) => {
+    const { _id } = req.params;
+  
+    GroupModel.findById({ _id }, { research_Topic: 1 })
+      .then((data) => {
+        return res.status(200).json({ status: data.research_Topic.status });
+      })
+      .catch((er) => {
+        console.log(er);
+        return res.status(404).json({ fetched: false });
+      });
+  };
+  
