@@ -129,5 +129,20 @@ exports.UpdateTopic = (req, res) => {
         return res.status(404).json({ updated: false });
       });
   };
+
+  //get all group
+exports.GetGroups = (req, res) => {
+    GroupModel.find({})
+      .populate({ path: "leader", select: "name" })
+      .populate({ path: "supervisor", select: "name" })
+      .populate({ path: "coSupervisor", select: "name" })
+      .populate({ path: "members", select: "name" })
+      .then((data) => {
+        return res.status(200).json(data);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  };
   
   

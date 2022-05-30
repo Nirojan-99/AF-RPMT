@@ -17,4 +17,8 @@ router
   .post(auth, GroupCtrl.AddTopicDoc)
   .put(auth, authStaff, GroupCtrl.UpdateTopicStatus) //update topic status
   .patch(auth, GroupCtrl.UpdateTopic); //update new topic
+
+  //admin
+router.route("/").get(auth, authAdmin, GroupCtrl.GetGroups); //get all grps
+router.route("/admin/:_id").get(auth, GroupCtrl.GetAdminGroup); //get single grp
 module.exports = router;
