@@ -348,3 +348,25 @@ exports.GetRequestedStd = (req, res) => {
         return res.status(404).json({ fetched: false });
       });
   };
+
+  //get group by grp id
+exports.GetGroup = (req, res) => {
+    const { supervisor, cosupervisor } = req.query;
+    const { _id } = req.params;
+    const filter = supervisor ? "supervisor" : "cosupervisor";
+  
+    if (filter) {
+      GroupModel.findById({ _id }, { [filter]: 1, requested: 1 })
+        .then((data) => {
+          if (data[filter]) {
+            return res.status(200).json({ [filter]: true });
+          } else if (data.requested && data.requested[filter]) {
+            return res.status(200).json({ Requested: true });
+          } else {
+            return res.status(200).json({ isRequestable: true });
+          }
+        })
+        .catch((er) => {});
+    }
+  };
+  

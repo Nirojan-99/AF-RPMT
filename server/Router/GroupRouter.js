@@ -38,3 +38,10 @@ router
 
 //get group requests data
 router.route("/requests/:_id").get(auth, GroupCtrl.GetRequestedStd);
+
+//single group
+router
+  .route("/:_id")
+  .get(auth, GroupCtrl.GetGroup)
+  .put()
+  .post(auth, GroupCtrl.AddGroup);
