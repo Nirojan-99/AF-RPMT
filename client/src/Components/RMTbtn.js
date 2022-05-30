@@ -1,5 +1,4 @@
-import { ClassNames } from "@emotion/react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyle = makeStyles({
@@ -16,15 +15,24 @@ function RMTbtn(props) {
   return (
     <>
       <Button
+        disabled={props.disabled}
         href={props.href}
-        sx={{ bgcolor: "#1383DD", marginY: "1rem", color: "#fff" }}
+        sx={{
+          bgcolor: "#1383DD",
+          marginY: "1rem",
+          color: "#fff",
+        }}
         color="secondary"
         onClick={props.handler}
         className={classes.btn}
       >
         <Typography
-          variant="h4"
-          sx={{ fontFamily: "open sans", fontWeight: "600" }}
+          sx={{
+            fontFamily: "open sans",
+            fontWeight: "500",
+            fontSize: 13,
+            textTransform: "none",
+          }}
         >
           {props.btn}
         </Typography>

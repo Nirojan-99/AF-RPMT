@@ -16,11 +16,13 @@ import { makeStyles } from "@mui/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+
+//pages
 import Editpassword from "./Components/EditPassword";
-import Research from "./Components/Research";
-import SearchGroup from "./Components/SearchGroup";
-import OwnGroup from "./Components/OwnGroup";
-import RequestSupervisor from "./Components/RequestSupervisor";
+// import Research from "./Components/Research";
+// import SearchGroup from "./Components/SearchGroup";
+// import OwnGroup from "./Components/OwnGroup";
+// import RequestSupervisor from "./Components/RequestSupervisor";
 import Submission from "./Components/Submissions";
 
 //react

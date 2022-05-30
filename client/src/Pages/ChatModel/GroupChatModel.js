@@ -11,17 +11,6 @@ import axios from "axios";
 
 import { timeParser, dateParser } from "../../Utils/TimeFormatter";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-};
-
 function GroupChatModel(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -33,7 +22,7 @@ function GroupChatModel(props) {
   };
 
   //user data
-  const { token, userID, role, URL } = useSelector((state) => state.loging);
+  const { token, URL } = useSelector((state) => state.loging);
 
   //state
   const [date, setDate] = useState("");
@@ -92,7 +81,6 @@ function GroupChatModel(props) {
                 fontFamily={"open sans"}
                 fontWeight={"700"}
                 color={"#DFDADA"}
-                //   variant="h4"
               >
                 {props.data.name}
               </Typography>
@@ -111,7 +99,7 @@ function GroupChatModel(props) {
                   <Skeleton
                     animation="pulse"
                     variant="text"
-                    sx={{ borderRadius: 1, mb: 2 }}
+                    sx={{ borderRadius: 1, mb: 0 }}
                     width={"100%"}
                   />
                 </>
@@ -128,3 +116,5 @@ function GroupChatModel(props) {
 }
 
 export default GroupChatModel;
+
+

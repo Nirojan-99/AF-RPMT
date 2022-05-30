@@ -14,8 +14,6 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { timeParser, dateParser } from "../../Utils/TimeFormatter";
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -53,16 +51,17 @@ const MessageBox = (props) => {
       });
   }, [isSent]);
 
-  // setTimeout(() => {
-  //   axios
-  //     .get(`${URL}chats/${props.id}/${userID}`, {
-  //       headers: { Authorization: "Agriuservalidation " + token },
-  //     })
-  //     .then((re) => {
-  //       setMessages(re.data);
-  //     })
-  //     .catch((er) => {});
-  // }, 100000);
+  //polling to get new msges every 1 minute intervel
+  setTimeout(() => {
+    axios
+      .get(`${URL}chats/${props.id}/${userID}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((re) => {
+        setMessages(re.data);
+      })
+      .catch((er) => {});
+  }, 60000);
 
   //send message
   const sendMsg = () => {
@@ -147,7 +146,6 @@ const MessageBox = (props) => {
           )}
         </Box>
         <Box sx={{ height: "12%", backgroundColor: "grey" }}>
-          {/* bottom */}
           <Box
             p={1.5}
             component={Paper}
@@ -174,6 +172,7 @@ const MessageBox = (props) => {
               sx={{ backgroundColor: "#0A4C81", borderRadius: 0 }}
             ></TextField>
             <IconButton
+              type="submit"
               onClick={sendMsg}
               size="medium"
               sx={{ borderRadius: 1, bgcolor: "#0A4C81" }}
@@ -181,7 +180,6 @@ const MessageBox = (props) => {
               <SendIcon size="large" color="info" />
             </IconButton>
           </Box>
-          {/* bottom */}
         </Box>
       </Box>
     </Modal>

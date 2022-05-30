@@ -1,6 +1,8 @@
+const fs = require("fs");
 const DocumentModel = require("../Model/DocumentModel");
 const UserModel = require("../Model/UserModel");
-const fs = require("fs");
+require("dotenv").config();
+
 //add doc
 exports.AddDocument = (req, res) => {
   const { _id: submitted_by } = req.params;
@@ -18,7 +20,7 @@ exports.AddDocument = (req, res) => {
         console.log(error);
         return res.status(404).json({ submitted: false });
       } else {
-        const link = "http://localhost:5000/Uploads/" + fileName;
+        const link = `${process.env.URL}Uploads/` + fileName;
         UserModel.findById({ _id: submitted_by }, { group_id: 1 })
           .then((data) => {
             console.log(data.group_id);
@@ -64,7 +66,7 @@ exports.EditDoc = (req, res) => {
     DocumentModel.findById({ _id }, { url: 1 }).then((data) => {
       //remove old doc
       if (data.url) {
-        const path = data.url.split("http://localhost:5000/")[1];
+        const path = data.url.split(process.env.URL)[1];
         fs.unlink(path, (er) => {
           if (er) {
             console.log(er);
@@ -78,7 +80,7 @@ exports.EditDoc = (req, res) => {
           console.log(error);
           return res.status(404).json({ submitted: false });
         } else {
-          const link = "http://localhost:5000/Uploads/" + fileName;
+          const link = `${process.env.URL}Uploads/` + fileName;
 
           DocumentModel.findByIdAndUpdate(
             { _id },
@@ -104,7 +106,7 @@ exports.DeleteDoc = (req, res) => {
   DocumentModel.findByIdAndUpdate({ _id }, { url: "" })
     .then((data) => {
       if (data.url) {
-        const path = data.url.split("http://localhost:5000/")[1];
+        const path = data.url.split(process.env.URL)[1];
         fs.unlink(path, (er) => {
           if (er) {
             console.log(er);

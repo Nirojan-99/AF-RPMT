@@ -3,11 +3,13 @@ const cors = require("cors");
 const BodyParser = require("body-parser");
 const app = express();
 const db = require("./db");
+const path = require("path");
 
 //routers
 const DocumentRoute = require("./Router/DocumentRoute");
 const ChatRoute = require("./Router/ChatRoute");
 const UserRouter = require("./Router/UserRoute");
+const SubmissionRouter = require("./Router/SubmissionRoute");
 
 //middlewares
 app.use(BodyParser.urlencoded({ extended: false }));
@@ -26,12 +28,13 @@ app.use((req, res, next) => {
 });
 
 // statically serve files
-app.use("/Uploads", express.static("Uploads"));
+app.use("/api/v1/Uploads", express.static(path.join(__dirname, "Uploads")));
 
 //routes
 app.use("/api/v1/documents", DocumentRoute);
 app.use("/api/v1/chats", ChatRoute);
 app.use("/api/v1/users", UserRouter);
+app.use("/api/v1/submissions", SubmissionRouter);
 
 //start server
 db.initDb((err, db) => {

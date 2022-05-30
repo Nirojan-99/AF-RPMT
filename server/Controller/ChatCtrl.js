@@ -40,11 +40,9 @@ exports.GetGroupMessage = (req, res) => {
     })
     .populate({ path: "sender", select: "name" })
     .then((data) => {
-      console.log(data);
       return res.status(200).json(data);
     })
     .catch((er) => {
-      console.log(er);
       return res.status(404).json({ fetched: false });
     });
 };

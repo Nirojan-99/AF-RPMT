@@ -22,7 +22,7 @@ const useStyle = makeStyles({
   },
 });
 
-function RightMessage(props) {
+function LeftMessage(props) {
   const classes = useStyle();
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -57,4 +57,4 @@ function RightMessage(props) {
   );
 }
 
-export default RightMessage;
+export default LeftMessage;
