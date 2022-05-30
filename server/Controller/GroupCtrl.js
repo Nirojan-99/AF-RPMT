@@ -210,4 +210,49 @@ exports.RemovePannel = (req, res) => {
         return res.status(404).json({ removed: false });
       });
   };
+
+  //accept or reject request
+exports.UpdateRequest = (req, res) => {
+    const { user_id: _id, grp_id: id } = req.params;
+    const { status, role } = req.body;
+  
+    if (status === "accept") {
+      UserModel.findByIdAndUpdate(
+        { _id },
+        { $pull: { requests: { id, role } }, $push: { groups: id } }
+      )
+        .then((data) => {
+          GroupModel.findByIdAndUpdate(
+            { _id: id },
+            { $set: { [role]: _id, [`requested.${role}`]: null } }
+          )
+            .then((data) => {
+              return res.status(200).json({ [status]: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ [status]: false });
+            });
+        })
+        .catch((er) => {
+          return res.status(404).json({ [status]: false });
+        });
+    } else if (status === "reject") {
+      UserModel.findByIdAndUpdate({ _id }, { $pull: { requests: { id: id } } })
+        .then((data) => {
+          GroupModel.findByIdAndUpdate(
+            { _id: id },
+            { $set: { [`requested.${role}`]: null } }
+          )
+            .then((data) => {
+              return res.status(200).json({ [status]: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ [status]: false });
+            });
+        })
+        .catch((er) => {
+          return res.status(404).json({ [status]: false });
+        });
+    }
+  };
   

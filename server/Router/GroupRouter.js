@@ -28,3 +28,10 @@ router
   .route("/pannel/:_id/:staff_id")
   .put(auth, authAdmin, GroupCtrl.AddPannel)
   .delete(auth, authAdmin, GroupCtrl.RemovePannel);
+
+  //cancel/accept request
+router
+.route("/:user_id/requests/:grp_id")
+.put(auth, authStaff, GroupCtrl.UpdateRequest) //for staff
+.patch(auth, GroupCtrl.HandleRequest) //for groups
+.delete(auth, authStaff, GroupCtrl.LeftGroup); //remove from group
