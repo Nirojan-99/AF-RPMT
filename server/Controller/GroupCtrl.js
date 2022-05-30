@@ -256,3 +256,39 @@ exports.UpdateRequest = (req, res) => {
     }
   };
   
+  //handle student request
+exports.HandleRequest = (req, res) => {
+    const { user_id, grp_id } = req.params;
+    const { action } = req.body;
+  
+    if (action === "accept") {
+      GroupModel.findByIdAndUpdate(
+        { _id: grp_id },
+        { $pull: { requests: user_id }, $push: { members: user_id } }
+      )
+        .then((data) => {
+          //handle user
+          UserModel.findByIdAndUpdate({ _id: user_id }, { group_id: grp_id })
+            .then((data) => {
+              return res.status(200).json({ updated: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ updated: false });
+            });
+        })
+        .catch((er) => {
+          return res.status(404).json({ updated: false });
+        });
+    } else if (action === "reject") {
+      GroupModel.findByIdAndUpdate(
+        { _id: grp_id },
+        { $pull: { requests: user_id } }
+      )
+        .then((data) => {
+          return res.status(200).json({ updated: true });
+        })
+        .catch((er) => {
+          return res.status(404).json({ updated: false });
+        });
+    }
+  };
