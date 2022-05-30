@@ -104,7 +104,6 @@ function NewSubmission(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data) {
           toast("Submission created", { type: "success" });
           setTimeout(() => {
@@ -178,7 +177,6 @@ function NewSubmission(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data) {
           toast("Submission Updated", { type: "success" });
           setTimeout(() => {

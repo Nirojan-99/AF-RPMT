@@ -21,7 +21,6 @@ function Submission() {
       })
       .then((res) => {
         setLoaded(true);
-        console.log(res.data)
         if (res.data) {
           setDocs(res.data);
         }

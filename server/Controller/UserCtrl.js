@@ -111,7 +111,6 @@ exports.GetUsers = (req, res) => {
           name: { $regex: "^" + search },
           role: { $in: ["Staff", "Student"] },
         }).then((count) => {
-          console.log(data);
           return res.status(200).json({ data, count });
         });
       })

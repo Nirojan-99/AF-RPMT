@@ -50,7 +50,6 @@ function Groups(props) {
     if (searchVal.trim()) {
       setDisplayGroups(() => {
         const array = groups.filter((row) => {
-          console.log(row.name.toLowerCase());
           if (row.name.toLowerCase().includes(searchVal.toLowerCase())) {
             return row;
           }
@@ -109,7 +108,7 @@ function Groups(props) {
                     return <Group key={index} data={row} />;
                   })
                 ) : (
-                  <Typography sx={{color:"#ccc"}}>No Group found</Typography>
+                  <Typography sx={{ color: "#ccc" }}>No Group found</Typography>
                 )
               ) : (
                 <>

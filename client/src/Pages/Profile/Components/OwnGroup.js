@@ -69,7 +69,6 @@ function OwnGroup() {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data.data);
         if (res.data.data) {
           setgrp_id(res.data.data._id);
           setLoaded(true);
@@ -99,7 +98,6 @@ function OwnGroup() {
         }
       })
       .catch((er) => {
-        console.log(er);
         setLoaded(true);
         setHasGroup(false);
       });

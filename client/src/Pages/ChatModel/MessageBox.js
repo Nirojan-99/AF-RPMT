@@ -42,7 +42,6 @@ const MessageBox = (props) => {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((re) => {
-        console.log(re.data);
         setLoaded(true);
         setMessages(re.data);
       })

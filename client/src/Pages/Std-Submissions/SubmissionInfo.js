@@ -40,7 +40,6 @@ function SubmissionInfo(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        // console.log(res.data.data);
         setSubmission(res.data.data);
         setGrade(res.data.data.grade);
         setComment(res.data.data.comments);
@@ -49,7 +48,6 @@ function SubmissionInfo(props) {
             headers: { Authorization: "Agriuservalidation " + token },
           })
           .then((res) => {
-            console.log(res.data);
             setGroup(res.data);
             setLoaded(true);
           })

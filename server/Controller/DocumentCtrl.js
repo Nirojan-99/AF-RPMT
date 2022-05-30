@@ -23,7 +23,6 @@ exports.AddDocument = (req, res) => {
         const link = `${process.env.URL}Uploads/` + fileName;
         UserModel.findById({ _id: submitted_by }, { group_id: 1 })
           .then((data) => {
-            console.log(data.group_id);
             const newDocu = new DocumentModel({
               submitted_by,
               group_id: data.group_id,

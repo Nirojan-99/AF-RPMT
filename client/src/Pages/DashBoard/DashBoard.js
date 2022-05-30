@@ -44,7 +44,6 @@ function DashBoard(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data)
         setLoaded(true);
         if (res.data) {
           setSubmissions(res.data.data);

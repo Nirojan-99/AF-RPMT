@@ -74,9 +74,7 @@ function RPMAccordion() {
                     );
                   })
                 ) : (
-                  <Typography sx={{ color:"#bbb" }}>
-                    No requests available
-                  </Typography>
+                  <Typography sx={{ color: "#bbb" }}></Typography>
                 )}
               </TransitionGroup>
             </List>

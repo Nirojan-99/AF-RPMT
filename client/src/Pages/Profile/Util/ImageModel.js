@@ -95,7 +95,6 @@ function ImageModal(props) {
         setPreviewUrl(res.data.dp);
       })
       .catch((er) => {
-        console.log(er);
       });
   }, []);
 

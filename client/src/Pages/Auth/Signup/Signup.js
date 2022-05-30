@@ -217,6 +217,7 @@ function SignIn(props) {
                         className={classes.input_margin}
                         margin="normal"
                         id="password"
+                        type="password"
                         label="Password"
                         variant="outlined"
                         size="medium"

@@ -5,7 +5,6 @@ exports.GetLastDate = (req, res) => {
 
   ChatModel.findOne({ group_id: group_id }, {}, { sort: { createdAt: -1 } })
     .then((data) => {
-      console.log(data);
       return res.status(200).json(data.createdAt);
     })
     .catch((er) => {
