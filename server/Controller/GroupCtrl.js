@@ -189,4 +189,25 @@ exports.AddPannel = (req, res) => {
         return res.status(404).json({ added: false });
       });
   };
+
+  //remove from pannel
+exports.RemovePannel = (req, res) => {
+    const { _id, staff_id } = req.params;
+  
+    GroupModel.findByIdAndUpdate({ _id }, { $pull: { pannel: staff_id } })
+      .then((data) => {
+        UserModel.findByIdAndUpdate({ _id: staff_id }, { $pull: { pannel: _id } })
+          .then((data1) => {
+            return res.status(200).json({ removed: true });
+          })
+          .catch((er) => {
+            console.log(er);
+            return res.status(404).json({ removed: false });
+          });
+      })
+      .catch((er) => {
+        console.log(er);
+        return res.status(404).json({ removed: false });
+      });
+  };
   
