@@ -399,3 +399,42 @@ exports.AddGroup = (req, res) => {
         return res.status(404).json({ added: false });
       });
   };
+
+  //request supervisor
+exports.Request = (req, res) => {
+    //prrameters
+    const { group_id: _id, role, user_id } = req.params;
+  
+    if (role === "Student") {
+      GroupModel.findByIdAndUpdate({ _id }, { $push: { requests: user_id } })
+        .then((data) => {
+          return res.status(200).json({ requested: true });
+        })
+        .catch((er) => {
+          return res.status(404).json({ requested: false });
+        });
+    } else {
+      GroupModel.findByIdAndUpdate(
+        { _id },
+        { $set: { [`requested.${role}`]: user_id } },
+        { upsert: true }
+      )
+        .then((data) => {
+          //update user model
+          UserModel.findByIdAndUpdate(
+            { _id: user_id },
+            { $push: { requests: { id: _id, role: role } } }
+          )
+            .then((data) => {
+              return res.status(200).json({ requested: true });
+            })
+            .catch((er) => {
+              return res.status(404).json({ requested: false });
+            });
+        })
+        .catch((er) => {
+          return res.status(404).json({ requested: false });
+          console.log(er);
+        });
+    }
+  };

@@ -45,3 +45,6 @@ router
   .get(auth, GroupCtrl.GetGroup)
   .put()
   .post(auth, GroupCtrl.AddGroup);
+
+  //grp requests
+router.route("/:group_id/:role/:user_id").put(auth, GroupCtrl.Request);
