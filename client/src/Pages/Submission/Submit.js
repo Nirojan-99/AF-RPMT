@@ -1,4 +1,11 @@
-import { Container, Box, Paper, Typography, Button } from "@mui/material";
+import {
+  Container,
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Skeleton,
+} from "@mui/material";
 import * as React from "react";
 import Header from "../../Components/Header";
 import { makeStyles } from "@mui/styles";
@@ -17,8 +24,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Alert from "../../Components/Alert";
 
 //utils
-import compare from "../../Utils/TimeCompare";
 import { dateParser, timeParser } from "../../Utils/TimeFormatter";
+import TimeRemains from "../../Utils/TimeRemains";
 
 const useStyle = makeStyles({
   dpLabel: {
@@ -42,6 +49,8 @@ function Submit(props) {
   const [submission, setSubmission] = useState();
   const [doc, setDoc] = useState();
   const [submittable, setSubmittable] = useState(true);
+  const [isSubDataLoaded, setSubDataLoaded] = useState(false);
+  const [isDocDataLoaded, setDocDataLoaded] = useState(false);
 
   //sub id
   const { id } = useParams();
@@ -61,10 +70,16 @@ function Submit(props) {
       })
       .then((res) => {
         setSubmission(res.data.data);
-        const val = compare(res.data.data.due_date, res.data.data.due_time);
+        const val = calRemaingTime(
+          res.data.data.due_date,
+          res.data.data.due_time
+        );
         setSubmittable(val);
+        setSubDataLoaded(true);
       })
-      .catch((er) => {});
+      .catch((er) => {
+        setSubDataLoaded(true);
+      });
 
     //get doc data
     axios
@@ -72,12 +87,14 @@ function Submit(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
+        setDocDataLoaded(true);
         if (res.data) {
           setDoc(res.data);
         }
       })
-      .catch((er) => {});
+      .catch((er) => {
+        setDocDataLoaded(true);
+      });
   }, []);
 
   const onFileChanged = (event) => {
@@ -103,7 +120,7 @@ function Submit(props) {
     setworkProgress(true);
 
     const data = new FormData();
-    console.log("here");
+
     data.append("submmited_date", new Date());
     data.append("submission_id", id);
     data.append("doc", selectedFile);
@@ -113,7 +130,6 @@ function Submit(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         setworkProgress(false);
         toast("submitted", { type: "success" });
       })
@@ -144,7 +160,6 @@ function Submit(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
         setworkProgress(false);
         toast("submitted", { type: "success" });
       })
@@ -152,6 +167,12 @@ function Submit(props) {
         toast("Unable to submit ,try again", { type: "error" });
         setworkProgress(false);
       });
+  };
+
+  //cal remaing time
+  const calRemaingTime = (date, time) => {
+    const data = TimeRemains(dateParser(date), timeParser(time));
+    return data;
   };
 
   const classes = useStyle();
@@ -174,7 +195,7 @@ function Submit(props) {
         elevation={1}
         py={3}
       >
-        <Container maxWidth="sm">
+        {<Container maxWidth="sm">
           <Box
             component={Paper}
             elevation={3}
@@ -186,59 +207,74 @@ function Submit(props) {
               color: "#333",
             }}
           >
-            <Box
-              component={Paper}
-              elevation={3}
-              square
-              p={2}
-              sx={{
-                borderRadius: "4px",
-                bgcolor: grey[500],
-                color: "#333",
-              }}
-            >
-              <Box my={2} textAlign={"center"}>
-                <label
-                  className={classes.dpLabel}
-                  htmlFor="image-dp"
-                  textAlign={"center"}
-                >
-                  <CloudUploadIcon
-                    sx={{
-                      width: 200,
-                      height: 200,
-                      alignContent: "center",
-                    }}
-                  />
-                  <Typography
-                    textAlign={"center"}
-                    variant="body1"
-                    sx={{ color: "#0D7FDC", mb: 0 }}
+            {isSubDataLoaded ? (
+              <Box
+                component={Paper}
+                elevation={3}
+                square
+                p={2}
+                sx={{
+                  borderRadius: "4px",
+                  bgcolor: grey[500],
+                  color: "#333",
+                }}
+              >
+                <Box my={2} sx={{ textAlign: "center" }}>
+                  <label
+                    style={{ cursor: "pointer" }}
+                    className={classes.dpLabel}
+                    htmlFor="image-dp"
                   >
-                    Drag and drop here
-                  </Typography>
-                </label>
-                <input
-                  disabled={!submittable}
-                  hidden
-                  id="image-dp"
-                  type={"file"}
-                  onChange={onFileChanged}
-                  // value={selectedFile}
-                  name={selectedFile}
-                />
-                <br />
-                {workprogress && (
-                  <Box sx={{ width: "100%", mb: -3 }}>
-                    <LinearProgress
-                      variant="indeterminate"
-                      value={progress}
-                      color="inherit"
+                    <CloudUploadIcon
+                      sx={{
+                        width: 200,
+                        height: 200,
+                        alignContent: "center",
+                      }}
                     />
-                  </Box>
-                )}
+                    <Typography
+                      textAlign={"center"}
+                      variant="body1"
+                      sx={{ color: "#0D7FDC", mb: 0 }}
+                    >
+                      Drag and drop here
+                    </Typography>
+                  </label>
+                  <input
+                    disabled={submittable === false}
+                    hidden
+                    id="image-dp"
+                    type={"file"}
+                    onChange={onFileChanged}
+                    // value={selectedFile}
+                    name={selectedFile}
+                  />
+                  <br />
+                  {workprogress && (
+                    <Box sx={{ width: "100%", mb: -3 }}>
+                      <LinearProgress
+                        variant="indeterminate"
+                        value={progress}
+                        color="inherit"
+                      />
+                    </Box>
+                  )}
+                </Box>
               </Box>
-            </Box>
+            ) : (
+              <Skeleton
+                animation="pulse"
+                variant="rectangular"
+                sx={{ borderRadius: 1, mb: 1.5 }}
+                width={"100%"}
+                height={300}
+              />
+            )}
+            {selectedFile && (
+              <Typography sx={{ fontSize: 10, mt: 0.4 }}>
+                Selected File : {selectedFile.name}
+              </Typography>
+            )}
             <Box
               my={2}
               sx={{
@@ -248,28 +284,75 @@ function Submit(props) {
                 justifyContent: "center",
               }}
             >
-              {
-                <Typography>
-                  {doc
-                    ? "Submitted"
-                    : submittable
-                    ? "Time Reamaining "
-                    : "Overdued"}
-                </Typography>
-              }
+              {isSubDataLoaded ? (
+                <Box>
+                  <Typography>{doc && "Submitted"}</Typography>
+                  <Typography sx={{ color: "#073050" }}>
+                    {isSubDataLoaded &&
+                      (submittable !== false
+                        ? `Time Reamaining : ${submittable}`
+                        : "Overdued")}
+                  </Typography>
+                </Box>
+              ) : (
+                <Skeleton
+                  animation="pulse"
+                  variant="text"
+                  sx={{ borderRadius: 1, mb: 1.5 }}
+                  width={150}
+                />
+              )}
               <Box sx={{ flexGrow: 1 }} />
-              <Button
-                alignItems="center"
-                disableElevation
-                disabled={!submittable}
-                sx={{ color: "#fff", fontFamily: "open sans" }}
-                variant="contained"
-                className={classes.btn}
-                onClick={doc ? edit : submit}
-              >
-                {doc ? "Update" : "Save"}
-              </Button>
+              {isSubDataLoaded ? (
+                <Button
+                  disableElevation
+                  disabled={submittable === false}
+                  sx={{ color: "#fff", fontFamily: "open sans" }}
+                  variant="contained"
+                  className={classes.btn}
+                  onClick={doc ? edit : submit}
+                >
+                  {doc ? "Update" : "Save"}
+                </Button>
+              ) : (
+                <Skeleton
+                  animation="pulse"
+                  variant="rectangular"
+                  sx={{ borderRadius: 1, mb: 1.5 }}
+                  width={110}
+                  height={45}
+                />
+              )}
             </Box>
+            {!isDocDataLoaded && (
+              <Box
+                my={1}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <Skeleton
+                  animation="pulse"
+                  variant="text"
+                  sx={{ borderRadius: 1, mb: 0.5 }}
+                  width={150}
+                />
+                <Skeleton
+                  animation="pulse"
+                  variant="text"
+                  sx={{ borderRadius: 1, mb: 0.5 }}
+                  width={120}
+                />
+                <Skeleton
+                  animation="pulse"
+                  variant="text"
+                  sx={{ borderRadius: 1, mb: 0.5 }}
+                  width={150}
+                />
+                <Box sx={{ flexGrow: 1 }} />
+              </Box>
+            )}
             {doc && (
               <Box
                 my={1}
@@ -289,7 +372,7 @@ function Submit(props) {
               </Box>
             )}
           </Box>
-        </Container>
+        </Container>}
       </Box>
     </>
   );
