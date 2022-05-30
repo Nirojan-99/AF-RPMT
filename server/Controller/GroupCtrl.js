@@ -94,4 +94,40 @@ exports.UpdateTopicStatus = (req, res) => {
       });
   };
   
+  //update new topic
+exports.UpdateTopic = (req, res) => {
+    const { _id } = req.params;
+    const { topic } = req.body;
+  
+    GroupModel.findById({ _id }, { research_Topic_doc: 1 })
+      .then((data) => {
+        if (data.research_Topic_doc) {
+          const path = data.research_Topic_doc.split(process.env.URL)[1];
+          fs.unlink(path, (er) => {
+            if (er) {
+              console.log(er);
+            }
+          });
+        }
+      })
+      .catch((er) => {});
+  
+    GroupModel.findByIdAndUpdate(
+      { _id },
+      {
+        $set: {
+          [`research_Topic.name`]: topic,
+          [`research_Topic.status`]: "false",
+          research_Topic_doc: "",
+        },
+      }
+    )
+      .then((data) => {
+        return res.status(200).json({ updated: true });
+      })
+      .catch((er) => {
+        return res.status(404).json({ updated: false });
+      });
+  };
+  
   
