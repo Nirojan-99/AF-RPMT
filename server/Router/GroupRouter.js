@@ -21,7 +21,7 @@ router
   //admin
 router.route("/").get(auth, authAdmin, GroupCtrl.GetGroups); //get all grps
 router.route("/admin/:_id").get(auth, GroupCtrl.GetAdminGroup); //get single grp
-module.exports = router;
+
 
 //add & remove pannel
 router
@@ -48,3 +48,8 @@ router
 
   //grp requests
 router.route("/:group_id/:role/:user_id").put(auth, GroupCtrl.Request);
+
+//single user
+router.route("/users/:_id").get(auth, GroupCtrl.GetUserGroup);
+
+module.exports = router;
