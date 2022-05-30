@@ -145,4 +145,25 @@ exports.GetGroups = (req, res) => {
       });
   };
   
+  //admin get single group
+exports.GetAdminGroup = (req, res) => {
+    const { _id } = req.params;
+  
+    GroupModel.findById({ _id })
+      .populate({ path: "leader", select: "name" })
+      .populate({ path: "supervisor", select: "name" })
+      .populate({ path: "coSupervisor", select: "name" })
+      .populate({ path: "members", select: "name" })
+      .populate({ path: "pannel", select: "name" })
+      .then((data) => {
+        if (data) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({ fetched: false });
+        }
+      })
+      .catch((er) => {
+        return res.status(404).json({ fetched: false });
+      });
+  };
   
