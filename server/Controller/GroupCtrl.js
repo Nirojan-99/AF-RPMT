@@ -292,3 +292,43 @@ exports.HandleRequest = (req, res) => {
         });
     }
   };
+
+  //remove from grp
+exports.LeftGroup = (req, res) => {
+    const { user_id, grp_id } = req.params;
+  
+    UserModel.findByIdAndUpdate({ _id: user_id }, { $pull: { groups: grp_id } })
+      .then((data) => {
+        //grp
+        GroupModel.findByIdAndUpdate({ _id: grp_id })
+          .then((data) => {
+            if (data.supervisor == user_id) {
+              GroupModel.findByIdAndUpdate({ _id: grp_id }, { supervisor: null })
+                .then((data) => {
+                  return res.status(200).json({ left: true });
+                })
+                .catch((er) => {
+                  return res.status(404).json({ left: false });
+                });
+            } else if (data.coSupervisor == user_id) {
+              GroupModel.findByIdAndUpdate(
+                { _id: grp_id },
+                { coSupervisor: null }
+              )
+                .then((data) => {
+                  return res.status(200).json({ left: true });
+                })
+                .catch((er) => {
+                  return res.status(404).json({ left: false });
+                });
+            }
+          })
+          .catch((er) => {
+            return res.status(404).json({ left: false });
+          });
+      })
+      .catch((er) => {
+        return res.status(404).json({ left: false });
+      });
+  };
+  
