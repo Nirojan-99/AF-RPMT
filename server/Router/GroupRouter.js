@@ -8,4 +8,7 @@ const { authAdmin, authStaff } = require("../Middleware/authAdmin");
 
 router.use(fileUpload());
 
+//search group
+router.route("/searches/:value").get(auth, GroupCtrl.SearchGroup);
+
 module.exports = router;
