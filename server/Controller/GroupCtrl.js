@@ -77,4 +77,21 @@ exports.AddTopicDoc = (req, res) => {
     }
   };
   
+  //update topic status
+exports.UpdateTopicStatus = (req, res) => {
+    const { _id } = req.params;
+    const { action } = req.body;
+    GroupModel.findByIdAndUpdate(
+      { _id },
+      { $set: { [`research_Topic.status`]: action } }
+    )
+      .then((data) => {
+        return res.status(200).json({ updated: true });
+      })
+      .catch((er) => {
+        console.log(er.message);
+        return res.status(404).json({ updated: false });
+      });
+  };
+  
   
