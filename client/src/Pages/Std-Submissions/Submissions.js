@@ -29,6 +29,7 @@ function AllSubmissions(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
+        console.log(res.data)
         setLoaded(true);
         setSubmissions(res.data);
       })

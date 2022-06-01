@@ -11,7 +11,7 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-exports.mailSender = (to, subject, text) => {
+exports.mailSender = async (to, subject, text) => {
   //mailing details
   var mailOptions = {
     from: "project2020sliit@gmail.com",
