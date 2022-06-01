@@ -33,7 +33,7 @@ function GroupView(props) {
   const { id } = useParams();
 
   //user data
-  const { userID, token, role,URL } = useSelector((state) => state.loging);
+  const { userID, token, role, URL } = useSelector((state) => state.loging);
 
   //use Effect call
   useEffect(() => {
@@ -363,10 +363,7 @@ const Staff = (props) => {
   const { id } = useParams();
 
   //user data
-  const { userID, token } = useSelector((state) => state.loging);
-
-  //url
-  const URL = "http://localhost:5000/api/v1/";
+  const { userID, token, URL } = useSelector((state) => state.loging);
 
   //add pannel
   const addPannel = () => {

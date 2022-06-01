@@ -3,7 +3,7 @@ const router = Router();
 const fileUpload = require("express-fileupload");
 
 const auth = require("../Middleware/auth");
-const { authAdmin } = require("../Middleware/authAdmin");
+const { authAdmin, authStaff } = require("../Middleware/authAdmin");
 
 const DocumentCtrl = require("../Controller/DocumentCtrl");
 
@@ -12,11 +12,11 @@ router.use(fileUpload());
 //user
 router.route("/users/:_id").get(auth, DocumentCtrl.GetUserDoc);
 
-//staff
+//staff //TODO
 router
   .route("/staff/:_id")
-  .get(auth, authAdmin, DocumentCtrl.GetStaffDoc)
-  .put(auth, authAdmin, DocumentCtrl.AddGrade);
+  .get(auth, authStaff, DocumentCtrl.GetStaffDoc)
+  .put(auth, authStaff, DocumentCtrl.AddGrade);
 
 //submision
 router.route("/:_id/:user_id").get(auth, DocumentCtrl.GetSubmissionDoc);

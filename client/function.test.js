@@ -40,7 +40,7 @@ describe("./src/Utils/TimeRemains", () => {
 
 describe("./src/Utils/TimeRemains", () => {
   //change data accordingly
-  const date = "5/31/2022";
+  const date = "6/2/2022";
   const time = "13:56";
 
   test("test fulure date", () => {

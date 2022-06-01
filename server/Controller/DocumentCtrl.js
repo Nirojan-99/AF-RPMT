@@ -215,7 +215,7 @@ exports.GetUserDoc = (req, res) => {
 exports.GetStaffDoc = (req, res) => {
   const { _id } = req.params;
   const { submisson } = req.query;
-
+  console.log("here");
   UserModel.findById({ _id }, { groups: 1, pannel: 1 })
     .then((data) => {
       const array_of_grp = [...data.pannel, ...data.groups];
